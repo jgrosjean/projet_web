@@ -7,6 +7,8 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Form\FormBuilderInterface;
 use Admin\AdminBundle\Entity\Licence;
 use Joueur\JoueurBundle\Entity\fichierUploadJoueur;
+use AppBundle\Entity\User;
+use AppBundle\Form\RegistrationModifDonneePerso;
 
 
 class DefaultController extends Controller
@@ -98,6 +100,24 @@ class DefaultController extends Controller
         'form' => $form->createView(),
             ));
 
+    }
+
+    public function modifDonneesPersoAction(Request $request)
+    {
+        $form = $this->get('form.factory')->create(new RegistrationModifDonneePerso, $this->getUser());
+
+            if ($form->handleRequest($request)->isValid()) {
+              $em = $this->getDoctrine()->getManager();
+              $em->persist($this->getUser());
+              $em->flush();
+            
+              // On redirige vers la page de visualisation de l'annonce nouvellement créée
+              return $this->redirect($this->generateUrl('joueur_homepage'));
+                }
+
+            return $this->render('JoueurBundle:Default:modifDonneesPerso.html.twig', array(
+              'form' => $form->createView(),
+                 ));
     }
     
 }

@@ -16,4 +16,7 @@ joueur_documents:
 joueur_uploadFile:
     path:     /joueur/uploadFile
     defaults: { _controller: JoueurBundle:Default:uploadFile }
+joueur_modifDonneesPerso:
+    path:     /joueur/modifDonneesPerso
+    defaults: { _controller: JoueurBundle:Default:modifDonneesPerso }
 
