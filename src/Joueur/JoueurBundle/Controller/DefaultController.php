@@ -17,7 +17,12 @@ class DefaultController extends Controller
 {
     public function indexAction()
     {
-        return $this->render('JoueurBundle:Default:index.html.twig');
+        $em = $this->getDoctrine()->getEntityManager();
+        $licence = $em->getRepository('JoueurBundle:licenceJoueur')->findOneBy( array('idJoueur' => $this->getUser()->getId()) );
+
+        return $this->render('JoueurBundle:Default:index.html.twig', array(
+                    'licence' => $licence,
+             ));
     }
     public function redirection_apresLoginAction()
     {
@@ -67,6 +72,7 @@ class DefaultController extends Controller
           $em = $this->getDoctrine()->getManager();
           $licencejoueur->setIdJoueur($this->getUser()->getId());
           $licencejoueur->setValidationLicenceFede(0);
+          $licencejoueur->setDateInscriptionLicence(new \DateTime('now'));
           $licencejoueur->setDepotSiCertifAncien(false);
           $licencejoueur->setAnneeLicence(2017);
           $licencejoueur->setValidationDocuments(false);

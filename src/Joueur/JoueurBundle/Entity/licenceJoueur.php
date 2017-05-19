@@ -140,6 +140,35 @@ class licenceJoueur
      */
     private $commentaireLicence;
 
+    /**
+     * @var date
+     *
+     * @ORM\Column(name="dateInscriptionLicence", type="date")
+     */    
+    private $dateInscriptionLicence;
+
+    /**
+     * Set dateInscriptionLicence
+     *
+     * @param \DateTime $dateInscriptionLicence
+     * @return fichierUpload
+     */
+    public function setDateInscriptionLicence($dateInscriptionLicence)
+    {
+        $this->dateInscriptionLicence = $dateInscriptionLicence;
+
+        return $this;
+    }
+
+    /**
+     * Get dateInscriptionLicence
+     *
+     * @return \DateTime 
+     */
+    public function getDateInscriptionLicence()
+    {
+        return $this->dateInscriptionLicence;
+    }
 
     /**
      * Get id
