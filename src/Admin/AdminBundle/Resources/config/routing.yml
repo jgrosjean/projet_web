@@ -28,3 +28,9 @@ admin_supprimerUploadLicence:
 admin_suppressionEnCoursUploadLicence:
     path:     /admin/suppressionEnCoursUploadLicence/{id}
     defaults: { _controller: AdminBundle:Default:suppressionEnCoursUploadLicence }
+admin_joueurs:
+    path:     /admin/joueurs
+    defaults: { _controller: AdminBundle:Default:joueurs }
+admin_joueursInfo:
+    path:     /admin/joueursInfo/{id}
+    defaults: { _controller: AdminBundle:Default:joueursInfo }

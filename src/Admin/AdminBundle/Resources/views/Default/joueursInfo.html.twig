@@ -1,0 +1,73 @@
+{% extends "::baseAdmin.html.twig" %}
+
+{% block body %}
+
+    <div class="section section-white">
+			<div class="container">
+				<div class="row">
+					<div class="col-md-12">
+						<div class="calltoaction-wrapper">
+							<h3>informations joueurs</h3> 
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+
+<div class="section">
+          <div class="container">
+            <h2>Généralités</h2>
+            <div class="row">
+              <div class="col-md-4 col-sm-6">
+                <div class="service-wrapper">
+                  <img src="{{ asset('img/info.png') }}" alt="Service 1">
+                  <h3>Informations personnelles<br><br></h3>
+                  <p><B>Nom :</B> {{ user.nom }} <br>
+                    <B> Prenom : </B> {{ user.prenom }}<br>
+                    <B> date de naissance : </B>{{ user.dateNaissance|date('d/m/Y') }}<br>
+                    <B> sexe : </B>{{ user.sexe }}<br>
+					<B> civiité : </B>{{ user.civilite }}<br>
+					<B> nationalité : </B>{{ user.nationalite }}<br>
+                    <B> Adresse : </B>{{ user.adresse }}<br>
+					<B> Code Postal : </B>{{ user.codePostal }}<br>
+                     <B>ville : </B>{{ user.ville }}<br>
+                     <B>N° de téléphone : </B>{{ user.telephone }}<br>
+                     <B>E-mail : </B>{{ user.email }}<br>
+                  </p>
+                </div>
+              </div>
+ 			 </div>
+		</div>
+		<div class="section">
+          <div class="container">
+            <h2>information sur la licence</h2>
+            <div class="row">
+              <div class="col-md-4 col-sm-6">
+                <div class="service-wrapper">
+                  <img src="{{ asset('img/info.png') }}" alt="Service 1">
+                  <h3>Informations licence<br><br></h3>
+                  <p><B>Nom :</B> {{ user.nom }} <br>
+                    <B> Prenom : </B> {{ user.prenom }}<br>
+                    <B> date de naissance : </B>{{ user.dateNaissance|date('d/m/Y') }}<br>
+                    <B> sexe : </B>{{ user.sexe }}<br>
+					<B> civiité : </B>{{ user.civilite }}<br>
+					<B> nationalité : </B>{{ user.nationalite }}<br>
+                    <B> Adresse : </B>{{ user.adresse }}<br>
+					<B> Code Postal : </B>{{ user.codePostal }}<br>
+                     <B>ville : </B>{{ user.ville }}<br>
+                     <B>N° de téléphone : </B>{{ user.telephone }}<br>
+                     <B>E-mail : </B>{{ user.email }}<br>
+                  </p>
+                </div>
+              </div>
+ 			 </div>
+		</div>
+
+
+
+
+
+
+
+	
+{% endblock %}

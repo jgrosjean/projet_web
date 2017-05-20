@@ -42,10 +42,22 @@
 
               <div class="col-md-4 col-sm-6">
                   <br><br>
-		        			<h3>Votre inscription au Badminton Club d'Oullins :</h3>
-		        			<p>mettre les infos de la licence</p>
+		        			
                   <p>
-                     METTRE DES CONDITIONS HTML en : {{licence.anneeLicence}}, vous êtes licencié à <a href="#"> cette formule</a> 
+                    {% if  licence %}
+                    <h3>Votre inscription au Badminton Club d'Oullins :</h3>
+                        Pour la saison débutant septembre  {{licence.anneeLicence}}
+                        {% if  licence.demandeLicenceEnCours %}
+                            <p>Votre demande de licence est en cours de traitement pour <a href="{{ path('joueur_licencesInfos', {'id':licence.idLicenceChoisie}) }}"> cette formule</a> depuis le {{licence.dateInscriptionLicence|date("m/d/Y")}} .</p>
+                            <B>{{licence.commentaireLicence}}</B>
+                        {% endif %}
+                          {% if  licence.validationLicenceFede %}
+                            <p>Vous êtes licencié au club, et vous avez souscrit à <a href="{{ path('joueur_licencesInfos', {'id':licence.idLicenceChoisie}) }}"> cette formule</a></p>
+                        {% endif %}
+                    {% else %}
+                      <p>Vous n'avez pas encore fait de demande d'inscription au club pour cette année</p>
+                    {% endif %}
+
                   </p>
 
 	        		</div>

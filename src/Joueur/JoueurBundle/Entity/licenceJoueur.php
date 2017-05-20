@@ -87,6 +87,13 @@ class licenceJoueur
     /**
      * @var integer
      *
+     * @ORM\Column(name="idLicenceChoisie", type="integer")
+     */
+    private $idLicenceChoisie;
+
+    /**
+     * @var integer
+     *
      * @ORM\Column(name="validationLicenceFede", type="integer")
      */
     private $validationLicenceFede;
@@ -385,6 +392,29 @@ class licenceJoueur
     public function getIdJoueur()
     {
         return $this->idJoueur;
+    }
+
+    /**
+     * Set idLicenceChoisie
+     *
+     * @param integer $idLicenceChoisie
+     * @return licenceJoueur
+     */
+    public function setIdLicenceChoisie($idLicenceChoisie)
+    {
+        $this->idLicenceChoisie = $idLicenceChoisie;
+
+        return $this;
+    }
+
+    /**
+     * Get idLicenceChoisie
+     *
+     * @return integer 
+     */
+    public function getIdLicenceChoisie()
+    {
+        return $this->idLicenceChoisie;
     }
 
     /**

@@ -1,0 +1,75 @@
+{% extends "::baseAdmin.html.twig" %}
+
+{% block body %}
+
+<!-- Call to Action Bar -->
+	    <div class="section section-white">
+			<div class="container">
+				<div class="row">
+					<div class="col-md-12">
+						<div class="calltoaction-wrapper">
+							<h3>Joueurs</h3> 
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<!-- End Call to Action Bar -->
+
+
+	<div class="section">
+	        <div class="container">
+	        	<div class="row">
+	        		
+
+		        			<h1>Joueurs inscription en cours</h1>
+								
+										
+							<h3>Joueurs pas valider ni docuement ni paiement</h3>
+							{% for joueurDocuementPaiement in joueursDocuementPaiement %}
+								<p>{{joueurDocuementPaiement.prenom}} {{joueurDocuementPaiement.nom}} <br> </p>
+							{%endfor%}
+
+							<br> <br> 
+
+							<h3>Joueurs ou il manque juste la validation de document</h3>
+							{% for joueurDocuement in joueursDocuement %}
+								<p>{{joueurDocuement.prenom}} {{joueurDocuement.nom}} <br> </p>
+							{%endfor%}
+
+							<br> <br> 
+
+							<h3>Joueurs ou il manque juste la validation du paiement</h3>
+							{% for joueurPaiement in joueursPaiement %}
+								<p>{{joueurPaiement.prenom}} {{joueurPaiement.nom}} <br> </p>
+							{%endfor%}
+
+							<br> <br> 
+
+							<h1>Joueurs inscrit cette année en 2017</h1>
+							{% for joueurLicencie in joueursLicencie %}
+								<p>{{joueurLicencie.prenom}} {{joueurLicencie.nom}} <br> </p>
+							{%endfor%}
+
+							
+		        	
+	        	</div>
+	        </div>
+	    </div>
+	    <!-- End Services -->
+
+		
+		
+
+
+
+
+
+
+
+
+
+
+
+	
+{% endblock %}

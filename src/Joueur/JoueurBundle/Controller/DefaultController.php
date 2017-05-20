@@ -72,12 +72,13 @@ class DefaultController extends Controller
           $em = $this->getDoctrine()->getManager();
           $licencejoueur->setIdJoueur($this->getUser()->getId());
           $licencejoueur->setValidationLicenceFede(0);
+          $licencejoueur->setIdLicenceChoisie($licence->getID());
           $licencejoueur->setDateInscriptionLicence(new \DateTime('now'));
           $licencejoueur->setDepotSiCertifAncien(false);
           $licencejoueur->setAnneeLicence(2017);
           $licencejoueur->setValidationDocuments(false);
           $licencejoueur->setValidationPaiement(false);
-          $licencejoueur->setDemandeLicenceEnCours(false);
+          $licencejoueur->setDemandeLicenceEnCours(true);
           $licencejoueur->setCommentaireLicence('');
 
           if($licencejoueur->getNumRenouvellementLicence() == null ){

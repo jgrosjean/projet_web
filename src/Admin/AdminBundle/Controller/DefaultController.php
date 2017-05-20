@@ -6,6 +6,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Admin\AdminBundle\Entity\Licence;
+use AppBundle\Entity\User;
 use Admin\AdminBundle\Entity\fichierUpload;
 use Admin\AdminBundle\Form\LicenceType;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
@@ -155,6 +156,62 @@ class DefaultController extends Controller
         $em->flush();
 
         return $this->redirect($this->generateUrl('admin_gererUploadLicence'));
+    }
+
+    public function joueursAction()
+    {
+        $em = $this->getDoctrine()->getManager();
+
+        $query = $em->createQuery(
+            'SELECT j
+            FROM AppBundle:User j, JoueurBundle:licenceJoueur l
+            WHERE j.id = l.idJoueur and l.anneeLicence = 2017 and l.demandeLicenceEnCours = 0'
+        );
+        $joueursLicencie = $query->getResult();
+
+        $query1 = $em->createQuery(
+            'SELECT j
+            FROM AppBundle:User j, JoueurBundle:licenceJoueur l
+            WHERE j.id = l.idJoueur and l.validationDocuments = 1 and l.validationPaiement = 0 and l.anneeLicence = 2017 and l.demandeLicenceEnCours = 1'
+        );
+
+        $joueursPaiement = $query1->getResult();
+
+
+        $query2 = $em->createQuery(
+            'SELECT j
+            FROM AppBundle:User j, JoueurBundle:licenceJoueur l
+            WHERE j.id = l.idJoueur and l.validationDocuments = 0 and l.validationPaiement = 0 and l.anneeLicence = 2017 and l.demandeLicenceEnCours = 1'
+        );
+
+        $joueursDocuementPaiement = $query2->getResult();
+
+        $query3 = $em->createQuery(
+            'SELECT j
+            FROM AppBundle:User j, JoueurBundle:licenceJoueur l
+            WHERE j.id = l.idJoueur and l.validationDocuments = 0 and l.validationPaiement = 1 and l.anneeLicence = 2017 and l.demandeLicenceEnCours = 1'
+        );
+
+        $joueursDocuement = $query3->getResult();
+
+        return $this->render('AdminBundle:Default:joueurs.html.twig', array(
+        'joueursLicencie' => $joueursLicencie,
+        'joueursDocuementPaiement' => $joueursDocuementPaiement,
+        'joueursDocuement' => $joueursDocuement,
+        'joueursPaiement' => $joueursPaiement,
+            ));
+    }
+
+     public function joueursInfoAction(User $user)
+    {
+
+        $em = $this->getDoctrine()->getEntityManager();
+            $licencesSenior = $em->getRepository('JoueurBundle:licenceJoueur')->findOneBy( array('idJoueur' =>  $user->getId(), 'anneeLicence' => 2017 ) );
+
+        return $this->render('AdminBundle:Default:joueursInfo.html.twig', array(
+        'user' => $user,
+        $licencesSenior => $licencesSenior
+            ));
     }
     
 }
