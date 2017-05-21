@@ -1,6 +1,9 @@
 joueur_homepage:
     path:     /joueur
     defaults: { _controller: JoueurBundle:Default:index }
+joueur_monProfil:
+    path:     /monProfil
+    defaults: { _controller: JoueurBundle:Default:monProfil }
 redirection_apresLogin:
     path:     /redirection
     defaults: { _controller: JoueurBundle:Default:redirection_apresLogin }
@@ -19,4 +22,11 @@ joueur_uploadFile:
 joueur_modifDonneesPerso:
     path:     /joueur/modifDonneesPerso
     defaults: { _controller: JoueurBundle:Default:modifDonneesPerso }
+joueur_inscriptionLicenceEtape1:
+    path:     /joueur/inscriptionLicenceEtape1/{id}
+    defaults: { _controller: JoueurBundle:Default:inscriptionLicenceEtape1 }
+joueur_inscriptionLicenceEtape2:
+    path:     /joueur/inscriptionLicenceEtape2
+    defaults: { _controller: JoueurBundle:Default:inscriptionLicenceEtape2 }
+
 

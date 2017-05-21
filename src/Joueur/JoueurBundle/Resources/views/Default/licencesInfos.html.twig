@@ -2,59 +2,76 @@
 
 {% block body %}
 
-	
-	
-		<!-- Pricing Table -->
-		<div class="section">
-	    	<div class="container">
-				<h1>Information sur la licence</h1><br>
+	<div class="section section-breadcrumbs">
+          <div class="container">
+            <div class="row">
+              <div class="col-md-12">
+                <h1>Informations sur la licence</h1>
+              </div>
+            </div>
+          </div>
+        </div>
 
 
-						<div class="row">
-							<div class="col-md-7">
-								<!-- Job Description -->
-								<div class="job-details-wrapper">
-									<h3>{{licence.intitule}}</h3>
-									
-									<h4>Voici les points caractéristiques de cette licence : </h4>
-									<ul>
-										<li>catégorie : {{licence.categorie}} </li>
+		<div class="container">
+				<div class="row">
+					<h2>Licence : {{licence.intitule}}</h2>
+					<!-- Image Column -->
+					<div class="col-sm-6">
+						<div class="portfolio-item">
+							<div class="portfolio-image">
+								<a href="#"><img src="{{ asset('img/photoJeune.jpg') }} " alt="Project Name"></a>
+							</div>
+						</div>
+					</div>
+					<!-- End Image Column -->
+					<!-- Project Info Column -->
+					<div class="portfolio-item-description col-sm-6">
+						<h3><B>{{licence.intitule}}</B></h3>
+						{{licence.descriptionComplete}}
+						<h4>Voici les points caractéristiques de cette licence : </h4>
+						<ul>
+							<li>catégorie : {{licence.categorie}} </li>
 										<li>prix: {{licence.prix}} €</li>
 										<li>{{licence.description1}}</li>
 										<li>{{licence.description2}}</li>
 										<li>{{licence.description3}}</li>
-									</ul>
-									<p>
-										{{licence.descriptionComplete}}
-									</p><br>
-									<h4>Comment s'inscrire ?</h4>
-									<p>
-										Merci de prendre connaissance de la procédure d'inscription : <br>
-									</p>
-									<p>{{ form(form)}}</p>
-								</div>
-								<!-- End Job Description -->
-							</div>
-							<!-- Sidebar -->
-							<div class="col-md-4 col-md-offset-1">
-								<h4>Ces documents peuvent vous intéresser</h4>
-								<table class="jobs-list">
-									<tr>
-										<td class="job-position">
-											<a href="#">Procédure d'inscription</a>
-										</td>
-									</tr>
-									<tr>
-										<td class="job-position">
-											<a href="#">Réglement intérieur</a> 
-										</td>
-									</tr>
-								</table>
-							</div>
-							<!-- End Sidebar -->
-						</div>
+						</ul>
+							<a href="{{ path('joueur_inscriptionLicenceEtape1', {'id':licence.id}) }}" class="btn">Inscription</a></li>
+						
 					</div>
-				</div>
+					<!-- End Project Info Column -->
+			
+				
+				
+				
+				<!-- End Related Projects -->
+			</div>
+
+<br>
+<p> A cet endroit, on peut rajouter des inforamtions propre au club .......</p>
+
+<br><br><br>
+
+		</div>
+
+
+			</div>
+		</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

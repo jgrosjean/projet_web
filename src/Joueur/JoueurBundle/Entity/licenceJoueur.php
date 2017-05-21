@@ -235,7 +235,7 @@ class licenceJoueur
      *
      * @return boolean 
      */
-    public function getdemandeDeLicence()
+    public function getDemandeDeLicence()
     {
         return $this->demandeDeLicence;
     }
@@ -246,7 +246,7 @@ class licenceJoueur
      * @param integer $numdemandeDeLicence
      * @return licenceJoueur
      */
-    public function setdemandeDeLicence($demandeDeLicence)
+    public function setDemandeDeLicence($demandeDeLicence)
     {
         $this->demandeDeLicence = $demandeDeLicence;
 

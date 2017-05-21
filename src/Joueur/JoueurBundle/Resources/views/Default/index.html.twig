@@ -3,6 +3,17 @@
 {% block body %}
 
 
+      <div class="section section-breadcrumbs">
+          <div class="container">
+            <div class="row">
+              <div class="col-md-12">
+                <h1>Accueil</h1>
+              </div>
+            </div>
+          </div>
+        </div>
+
+
 	    <div class="section section-white">
 			<div class="container">
 				<div class="row">
@@ -17,54 +28,16 @@
 	
 		<div class="section">
           <div class="container">
-            <h2>Généralités</h2>
-            <div class="row">
-              <div class="col-md-4 col-sm-6">
-                <div class="service-wrapper">
-                  <img src="{{ asset('img/info.png') }}" alt="Service 1">
-                  <h3>Informations personnelles<br><br></h3>
-                  <p><B>Nom :</B> {{ app.user.nom }} <br>
-                    <B> Prenom : </B> {{ app.user.prenom }}<br>
-                    <B> date de naissance : </B>{{ app.user.dateNaissance|date('d/m/Y') }}<br>
-                    <B> sexe : </B>{{ app.user.sexe }}<br>
-					<B> civiité : </B>{{ app.user.civilite }}<br>
-					<B> nationalité : </B>{{ app.user.nationalite }}<br>
-                    <B> Adresse : </B>{{ app.user.adresse }}<br>
-					<B> Code Postal : </B>{{ app.user.codePostal }}<br>
-                     <B>ville : </B>{{ app.user.ville }}<br>
-                     <B>N° de téléphone : </B>{{ app.user.telephone }}<br>
-                     <B>E-mail : </B>{{ app.user.email }}<br>
-                  </p>
-                  <a href="{{ path('joueur_modifDonneesPerso')}}" class="btn">modifier</a>
+            <h2>Explication du site</h2>
+            <p>bla bla blaaaa.....</p>
+            <br><br><br><br><br><br><br> <br><br><br><br><br><br><br> <br><br><br><br><br><br><br> <br><br><br><br><br><br><br>
+
+            <h2>Explication de l'inscription licence</h2>
+            <p>bla bla blaaaa.....</p>
+            <br><br><br><br><br><br><br> <br><br><br><br><br><br><br> <br><br><br><br><br><br><br> <br><br><br><br><br><br><br>
+
                 </div>
               </div>
-
-
-              <div class="col-md-4 col-sm-6">
-                  <br><br>
-		        			
-                  <p>
-                    {% if  licence %}
-                    <h3>Votre inscription au Badminton Club d'Oullins :</h3>
-                        Pour la saison débutant septembre  {{licence.anneeLicence}}
-                        {% if  licence.demandeLicenceEnCours %}
-                            <p>Votre demande de licence est en cours de traitement pour <a href="{{ path('joueur_licencesInfos', {'id':licence.idLicenceChoisie}) }}"> cette formule</a> depuis le {{licence.dateInscriptionLicence|date("m/d/Y")}} .</p>
-                            <B>{{licence.commentaireLicence}}</B>
-                        {% endif %}
-                          {% if  licence.validationLicenceFede %}
-                            <p>Vous êtes licencié au club, et vous avez souscrit à <a href="{{ path('joueur_licencesInfos', {'id':licence.idLicenceChoisie}) }}"> cette formule</a></p>
-                        {% endif %}
-                    {% else %}
-                      <p>Vous n'avez pas encore fait de demande d'inscription au club pour cette année</p>
-                    {% endif %}
-
-                  </p>
-
-	        		</div>
-            </div>
-          </div>
-      </div>
-
 
 
 

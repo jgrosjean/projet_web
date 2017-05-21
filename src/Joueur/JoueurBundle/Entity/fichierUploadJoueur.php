@@ -31,6 +31,13 @@ class fichierUploadJoueur
      */
     private $IdJoueur;
 
+     /**
+     * @var integer
+     *
+     * @ORM\Column(name="anneeInscription", type="integer")
+     */
+    private $anneeInscription;
+
     /**
      * Set IdJoueur
      *
@@ -45,6 +52,29 @@ class fichierUploadJoueur
     }
 
     /**
+     * Get anneeInscription
+     *
+     * @return integer 
+     */
+    public function getAnneeInscription()
+    {
+        return $this->anneeInscription;
+    }
+
+    /**
+     * Set anneeInscription
+     *
+     * @param integer $anneeInscription
+     * @return fichierUploadJoueur
+     */
+    public function setAnneeInscription($anneeInscription)
+    {
+        $this->anneeInscription = $anneeInscription;
+
+        return $this;
+    }
+
+    /**
      * Get IdJoueur
      *
      * @return integer 
@@ -53,6 +83,7 @@ class fichierUploadJoueur
     {
         return $this->IdJoueur;
     }
+    
 
     /**
      * @var date

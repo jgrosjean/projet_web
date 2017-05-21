@@ -1,0 +1,76 @@
+{% extends "::baseJoueur.html.twig" %}
+
+{% block body %}
+
+	<div class="section section-breadcrumbs">
+          <div class="container">
+            <div class="row">
+              <div class="col-md-12">
+                <h1>Inscription Licence : {{licence.intitule}}</h1>
+              </div>
+            </div>
+          </div>
+        </div>
+
+
+		<div class="container">
+				<div class="row">
+					<h2><b>Etape 1 </B>: vérification de vos données personnelles  </h2>
+
+							<div class="col-md-4 col-sm-6">
+								<div class="service-wrapper">
+								<img src="{{ asset('img/info.png') }}" alt="Service 1">
+								<h3>Informations personnelles<br><br></h3>
+								<p><B>Nom :</B> {{ app.user.nom }} <br>
+									<B> Prenom : </B> {{ app.user.prenom }}<br>
+									<B> date de naissance : </B>{{ app.user.dateNaissance|date('d/m/Y') }}<br>
+									<B> sexe : </B>{{ app.user.sexe }}<br>
+									<B> civiité : </B>{{ app.user.civilite }}<br>
+									<B> nationalité : </B>{{ app.user.nationalite }}<br>
+											<B> Adresse : </B>{{ app.user.adresse }}<br>
+									<B> Code Postal : </B>{{ app.user.codePostal }}<br>
+									<B>ville : </B>{{ app.user.ville }}<br>
+									<B>N° de téléphone : </B>{{ app.user.telephone }}<br>
+									<B>E-mail : </B>{{ app.user.email }}<br><br>
+									<B>Personne à contacter en cas d'urgence: </B>{{ app.user.personneAContacterUrgence }} ({{ app.user.numeroPersonneUrgence }} ) <br>
+				
+								</p>
+								<a href="{{ path('joueur_modifDonneesPerso')}}" class="btn">modifier</a>
+								</div>
+						
+						</div>
+						<br>
+						<p>
+							Merci de vérifier ces informations. Si ces informations sont incorrecte, merci de les modifier. C'est à partir de ces renseignements que nous allons enregister votre licence auprès de la FFBAD.
+						</p>
+					</div>
+							
+
+
+
+
+
+
+
+							<h2><b>Etape 2 </B>: Merci de remplir le questionnaire suivant  </h2>
+
+
+
+									<p>{{ form(form)}}</p>
+								</div>
+								<!-- End Job Description -->
+							</div>
+							<!-- Sidebar -->
+							
+
+
+
+
+
+
+
+
+
+
+	
+{% endblock %}

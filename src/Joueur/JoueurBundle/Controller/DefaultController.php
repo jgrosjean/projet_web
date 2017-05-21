@@ -17,13 +17,57 @@ class DefaultController extends Controller
 {
     public function indexAction()
     {
+
+        return $this->render('JoueurBundle:Default:index.html.twig');
+    }
+
+    public function monProfilAction()
+    {
+        
         $em = $this->getDoctrine()->getEntityManager();
         $licence = $em->getRepository('JoueurBundle:licenceJoueur')->findOneBy( array('idJoueur' => $this->getUser()->getId()) );
+        $fichiersPresents = $em->getRepository('JoueurBundle:fichierUploadJoueur')->findBy( array('IdJoueur' => $this->getUser(), 'anneeInscription' => 2017 ));
 
-        return $this->render('JoueurBundle:Default:index.html.twig', array(
-                    'licence' => $licence,
-             ));
+        $document = new fichierUploadJoueur();
+        $document -> setDate(new \DateTime('now'));
+        $document -> setAnneeInscription(2017);
+        $document -> setIdJoueur($this->getUser()->getId());
+        $form = $this->createFormBuilder($document)
+            ->add('name')
+            ->add('file')
+            ->getForm()
+        ;
+
+        if ($this->getRequest()->getMethod() === 'POST') {
+            {
+                    $form->bind($this->getRequest());
+                    $verif=$document->verifExtension();
+                    if ($form->isValid()) {
+                    $em = $this->getDoctrine()->getEntityManager();
+                    if( $verif == 1 ){
+                        $em->persist($document);
+                        $em->flush();
+                        return $this->redirect($this->generateUrl('joueur_monProfil'));
+                    }
+                    else{
+                        return $this->render('JoueurBundle:Default:uploadFileErreur.html.twig', array(
+                        'form' => $form->createView(),
+            ));
+                    }
+                   
+                    }
+            }
+           
+        
+            }
+        
+        return $this->render('JoueurBundle:Default:monProfil.html.twig', array(
+        'form' => $form->createView(),
+        'licence' => $licence,
+        'fichiersPresents' => $fichiersPresents,
+            ));
     }
+
     public function redirection_apresLoginAction()
     {
 		$authChecker = $this->container->get('security.authorization_checker');
@@ -53,9 +97,30 @@ class DefaultController extends Controller
                                                                                         ));
     }
 
-    public function licencesInfosAction(Request $request, Licence $licence)
+    public function licencesInfosAction(Licence $licence)
     {
-        $licencejoueur = new licenceJoueur();
+       
+
+        //On check si le joueur est déjà licencié 
+        $em = $this->getDoctrine()->getEntityManager();
+            $checklicence = $em->getRepository('JoueurBundle:licenceJoueur')->findBy( array('anneeLicence' => 2017, 'idJoueur' => $this->getUser()->getId()) );
+            if($checklicence != null){
+                return $this->render('JoueurBundle:Default:licencesInfosDejaLicencie.html.twig', array(
+                    'licence' => $licence,
+             ));
+
+            }
+    
+
+        return $this->render('JoueurBundle:Default:licencesInfos.html.twig', array(
+          'licence' => $licence,
+             ));
+     
+    }
+
+    public function inscriptionLicenceEtape1Action(Request $request, Licence $licence)
+    {
+         $licencejoueur = new licenceJoueur();
 
         //On check si le joueur est déjà licencié 
         $em = $this->getDoctrine()->getEntityManager();
@@ -76,6 +141,7 @@ class DefaultController extends Controller
           $licencejoueur->setDateInscriptionLicence(new \DateTime('now'));
           $licencejoueur->setDepotSiCertifAncien(false);
           $licencejoueur->setAnneeLicence(2017);
+          $licencejoueur->setDemandeDeLicence(1);
           $licencejoueur->setValidationDocuments(false);
           $licencejoueur->setValidationPaiement(false);
           $licencejoueur->setDemandeLicenceEnCours(true);
@@ -88,21 +154,68 @@ class DefaultController extends Controller
           $em->flush();
 
           // On redirige vers la page de visualisation de l'annonce nouvellement créée
-          return $this->redirect($this->generateUrl('joueur_homepage'));
+          return $this->redirect($this->generateUrl('joueur_documents'));
             }
 
-        return $this->render('JoueurBundle:Default:licencesInfos.html.twig', array(
+        return $this->render('JoueurBundle:Default:inscriptionLicenceEtape1.html.twig', array(
           'form' => $form->createView(),
           'licence' => $licence,
              ));
-     
+
+
+
+
+        return $this->render('JoueurBundle:Default:inscriptionLicenceEtape1.html.twig');
+    }
+
+    public function inscriptionLicenceEtape2Action()
+    {
+
+        return $this->render('JoueurBundle:Default:inscriptionLicenceEtape2.html.twig');
     }
 
     public function documentsAction()
     {
-         $em = $this->getDoctrine()->getEntityManager();
-         $fichiersPresents = $em->getRepository('JoueurBundle:fichierUploadJoueur')->findBy( array('IdJoueur' => $this->getUser() ));
+          $em = $this->getDoctrine()->getEntityManager();
+        $licence = $em->getRepository('JoueurBundle:licenceJoueur')->findOneBy( array('idJoueur' => $this->getUser()->getId()) );
+        $fichiersPresents = $em->getRepository('JoueurBundle:fichierUploadJoueur')->findBy( array('IdJoueur' => $this->getUser(), 'anneeInscription' => 2017 ));
+
+        $document = new fichierUploadJoueur();
+        $document -> setDate(new \DateTime('now'));
+        $document -> setAnneeInscription(2017);
+        $document -> setIdJoueur($this->getUser()->getId());
+        $form = $this->createFormBuilder($document)
+            ->add('name')
+            ->add('file')
+            ->getForm()
+        ;
+
+        if ($this->getRequest()->getMethod() === 'POST') {
+            {
+                    $form->bind($this->getRequest());
+                    $verif=$document->verifExtension();
+                    if ($form->isValid()) {
+                    $em = $this->getDoctrine()->getEntityManager();
+                    if( $verif == 1 ){
+                        $em->persist($document);
+                        $em->flush();
+                        return $this->redirect($this->generateUrl('joueur_documents'));
+                    }
+                    else{
+                        return $this->render('JoueurBundle:Default:documents.html.twig', array(
+                        'form' => $form->createView(),
+            ));
+                    }
+                   
+                    }
+            }
+           
+        
+            }
+        
         return $this->render('JoueurBundle:Default:documents.html.twig', array(
+        'form' => $form->createView(),
+        'licence' => $licence,
         'fichiersPresents' => $fichiersPresents,
             ));
     }
@@ -112,6 +225,7 @@ class DefaultController extends Controller
         
         $document = new fichierUploadJoueur();
         $document -> setDate(new \DateTime('now'));
+        $document -> setAnneeInscription(2017);
         $document -> setIdJoueur($this->getUser()->getId());
         $form = $this->createFormBuilder($document)
             ->add('name')

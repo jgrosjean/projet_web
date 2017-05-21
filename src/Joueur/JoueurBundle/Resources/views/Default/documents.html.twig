@@ -2,19 +2,54 @@
 
 {% block body %}
 
+	<div class="section section-breadcrumbs">
+          <div class="container">
+            <div class="row">
+              <div class="col-md-12">
+                <h1>Gestion de vos documents</h1>
+              </div>
+            </div>
+          </div>
+        </div>
+
+
 	<div class="section">
 	        <div class="container">
-	        	<h1> Gestion des documents </h1>
-				<a href="{{ path('joueur_uploadFile')}}"> Uploader un nouveau fichier</a><br><br>
+	        	<h2> Gestion des documents pour la saison 2017 </h2>
+				<p>
+                    {% if  licence %}
+                    <h3>Votre inscription au Badminton Club d'Oullins IL FAUT LISTER TOUS LES DOCUMENTS QU IL DOIT JOINDRE</h3>
+                        Pour la saison débutant septembre  {{licence.anneeLicence}}
+                        {% if  licence.demandeLicenceEnCours %}
+                            <p>Votre demande de licence est en cours de traitement pour <a href="{{ path('joueur_licencesInfos', {'id':licence.idLicenceChoisie}) }}"> cette formule</a> depuis le {{licence.dateInscriptionLicence|date("m/d/Y")}} .</p>
+                            <p>Merci de vérifier que vous avez joint l'ensemble des documents pour l'inscription licence (certificat médicale, ... ). Voici la liste des documents que vous avez déjà fourni :</p>
+                            {% for fichierPresents in fichiersPresents %}
+                                  <p>
+                                    <a target="_blank" href="{{ asset('uploads/fichiersJoueur/' ~ fichierPresents.path) }}">&nbsp;&nbsp;&nbsp;- {{fichierPresents.name}} </a>  <br>
+                                  </p>
+                                {% endfor %}
+								<br><br>
+                                <h3>Vous n'avez pas fourni tous les documents ? </h3>
+								<p> Merci de nous les founir, soit via le formulaire ci-dessous, soit par dossier papier.</p>
+                                <form action="#" method="post" {{ form_enctype(form) }}>
+                                  {{ form_widget(form) }}
 
-				<p>Voici les documents déjà enrgistrés</p>
-				{% for fichierPresents in fichiersPresents %}
-					<p>
-						<li><a target="_blank" href="{{ asset('uploads/fichiersJoueur/' ~ fichierPresents.path) }}">{{fichierPresents.name}} </a>  </li> 
+                                  <input type="submit" value="Upload Document" />
+                                </form>
+                            <B>{{licence.commentaireLicence}}</B>
+                        {% endif %}
+                          {% if  licence.validationLicenceFede %}
+                            <p>Vous êtes licencié au club, et vous avez souscrit à <a href="{{ path('joueur_licencesInfos', {'id':licence.idLicenceChoisie}) }}"> cette formule</a></p>
+                        {% endif %}
+                    {% else %}
+                      <p><B>Vous n'avez pas encore fait de demande d'inscription au club pour cette année.</B></p>
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ->  <a href="{{ path('joueur_licences')}}"> inscription</a>
+                    {% endif %}
+				
 
-					</p>
-				{% endfor %}
-
+					<br><br><br><br>
+					<h2>Tous vos fichiers </h2>
+					<p>Voici la liste de tous les fichiers que vous avez uploader dans l'application : A FAIRE </p>
 
 			</div>
 	</div>

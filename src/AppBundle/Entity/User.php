@@ -33,6 +33,13 @@ class User extends BaseUser
      */
     private $prenom;
 
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="personneAContacterUrgence", type="string", length=255)
+     */
+    private $personneAContacterUrgence;
+
      /**
      * @var \DateTime
      *
@@ -81,6 +88,13 @@ class User extends BaseUser
      * @ORM\Column(name="codePostal", type="integer")
      */
     private $codePostal;
+
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="numeroPersonneUrgence", type="integer")
+     */
+    private $numeroPersonneUrgence;
 
     /**
      * @var string
@@ -136,6 +150,29 @@ class User extends BaseUser
     public function getNom()
     {
         return $this->nom;
+    }
+
+    /**
+     * Set personneAContacterUrgence
+     *
+     * @param string $personneAContacterUrgence
+     * @return Humain
+     */
+    public function setPersonneAContacterUrgence($personneAContacterUrgence)
+    {
+        $this->personneAContacterUrgence = $personneAContacterUrgence;
+
+        return $this;
+    }
+
+    /**
+     * Get personneAContacterUrgence
+     *
+     * @return string 
+     */
+    public function getPersonneAContacterUrgence()
+    {
+        return $this->personneAContacterUrgence;
     }
 
     /**
@@ -297,6 +334,29 @@ class User extends BaseUser
     public function getAdresse()
     {
         return $this->adresse;
+    }
+
+    /**
+     * Set numeroPersonneUrgence
+     *
+     * @param integer $numeroPersonneUrgence
+     * @return licence_Joueur
+     */
+    public function setNumeroPersonneUrgence($numeroPersonneUrgence)
+    {
+        $this->numeroPersonneUrgence = $numeroPersonneUrgence;
+
+        return $this;
+    }
+
+    /**
+     * Get numeroPersonneUrgence
+     *
+     * @return integer 
+     */
+    public function getNumeroPersonneUrgence()
+    {
+        return $this->numeroPersonneUrgence;
     }
 
     /**
