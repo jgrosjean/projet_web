@@ -40,26 +40,43 @@
 		</div>
 		<div class="section">
           <div class="container">
-            <h2>information sur la licence</h2>
-            <div class="row">
-              <div class="col-md-4 col-sm-6">
-                <div class="service-wrapper">
-                  <img src="{{ asset('img/info.png') }}" alt="Service 1">
-                  <h3>Informations licence<br><br></h3>
-                  <p><B>Nom :</B> {{ user.nom }} <br>
-                    <B> Prenom : </B> {{ user.prenom }}<br>
-                    <B> date de naissance : </B>{{ user.dateNaissance|date('d/m/Y') }}<br>
-                    <B> sexe : </B>{{ user.sexe }}<br>
-					<B> civiité : </B>{{ user.civilite }}<br>
-					<B> nationalité : </B>{{ user.nationalite }}<br>
-                    <B> Adresse : </B>{{ user.adresse }}<br>
-					<B> Code Postal : </B>{{ user.codePostal }}<br>
-                     <B>ville : </B>{{ user.ville }}<br>
-                     <B>N° de téléphone : </B>{{ user.telephone }}<br>
-                     <B>E-mail : </B>{{ user.email }}<br>
-                  </p>
-                </div>
-              </div>
+            <h2>information sur la licence actuelle</h2>
+              <p>
+                  {% if licenceActuelle.demandeLicenceEnCours == 1 %}
+                      Demande de licence en cours <br>
+
+                        {% if licenceActuelle.validationDocuments == 0 and licenceActuelle.validationPaiement == 0 %}
+                            Ce qu'il manque pour son inscription : Documents et paiement
+                        {% elseif licenceActuelle.validationDocuments == 1 and licenceActuelle.validationPaiement == 0 %}
+                            Ce qu'il manque pour son inscription : paiement
+                        {% elseif licenceActuelle.validationDocuments == 0 and licenceActuelle.validationPaiement == 1 %}
+                            Ce qu'il manque pour son inscription : documents
+                        {% endif %}
+
+
+                  {% else  %}
+                      {{ user.prenom }} {{ user.nom }} est licencié au club
+                  {% endif %}
+                  <br>
+                  Quelle licence a t il pris ? : <a href="{{ path('admin_licenceInfo', {'id':licenceActuelle.idLicenceChoisie}) }}" >celle la</a><br>
+                 
+                 <br>
+
+                 
+                 <a href="{{ path('admin_modifInscriptionJoueur', {'id':licenceActuelle.id}) }}" >modifier l'état d'inscription de joueur </a><br>
+
+              
+              </p>
+ 			 </div>
+		</div>
+
+    <div class="section">
+          <div class="container">
+            <h2>Quelles licences les autres années ?</h2>
+              <p>
+                 
+
+              </p>
  			 </div>
 		</div>
 

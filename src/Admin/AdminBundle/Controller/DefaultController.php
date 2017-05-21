@@ -6,11 +6,14 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Admin\AdminBundle\Entity\Licence;
+use Joueur\JoueurBundle\Entity\licenceJoueur;
 use AppBundle\Entity\User;
 use Admin\AdminBundle\Entity\fichierUpload;
 use Admin\AdminBundle\Form\LicenceType;
+use Admin\AdminBundle\Form\etatInscriptionType;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
+
 
 
 class DefaultController extends Controller
@@ -206,12 +209,39 @@ class DefaultController extends Controller
     {
 
         $em = $this->getDoctrine()->getEntityManager();
-            $licencesSenior = $em->getRepository('JoueurBundle:licenceJoueur')->findOneBy( array('idJoueur' =>  $user->getId(), 'anneeLicence' => 2017 ) );
+            $licenceActuelle = $em->getRepository('JoueurBundle:licenceJoueur')->findOneBy( array('idJoueur' =>  $user->getId(), 'anneeLicence' => 2017 ) );
 
         return $this->render('AdminBundle:Default:joueursInfo.html.twig', array(
         'user' => $user,
-        $licencesSenior => $licencesSenior
+        'licenceActuelle' => $licenceActuelle,
             ));
+    }
+
+    public function licenceInfoAction(Licence $licence )
+    {
+        return $this->render('AdminBundle:Default:licenceInfo.html.twig', array(
+        'licence' => $licence,
+            ));
+    }
+
+    public function modifInscriptionJoueurAction(Request $request, licenceJoueur $licenceAModif )
+    {
+         $form = $this->get('form.factory')->create(new etatInscriptionType, $licenceAModif);
+
+        if ($form->handleRequest($request)->isValid()) {
+          $em = $this->getDoctrine()->getManager();
+          $em->persist($licenceAModif);
+          $em->flush();
+        
+          // On redirige vers la page de visualisation de l'annonce nouvellement créée
+          return $this->redirect($this->generateUrl('admin_licences'));
+            }
+
+        return $this->render('AdminBundle:Default:modifInscriptionJoueur.html.twig', array(
+          'form' => $form->createView(),
+             ));
+
+
     }
     
 }

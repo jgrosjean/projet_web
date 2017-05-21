@@ -45,6 +45,13 @@ class licenceJoueur
     /**
      * @var boolean
      *
+     * @ORM\Column(name="demandeDeLicence", type="boolean")
+     */
+    private $demandeDeLicence;
+
+    /**
+     * @var boolean
+     *
      * @ORM\Column(name="prospectionFede", type="boolean")
      */
     private $prospectionFede;
@@ -219,6 +226,29 @@ class licenceJoueur
     public function setNumRenouvellementLicence($numRenouvellementLicence)
     {
         $this->numRenouvellementLicence = $numRenouvellementLicence;
+
+        return $this;
+    }
+
+    /**
+     * Get demandeDeLicence
+     *
+     * @return boolean 
+     */
+    public function getdemandeDeLicence()
+    {
+        return $this->demandeDeLicence;
+    }
+
+    /**
+     * Set numdemandeDeLicence
+     *
+     * @param integer $numdemandeDeLicence
+     * @return licenceJoueur
+     */
+    public function setdemandeDeLicence($demandeDeLicence)
+    {
+        $this->demandeDeLicence = $demandeDeLicence;
 
         return $this;
     }

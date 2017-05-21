@@ -27,28 +27,28 @@
 										
 							<h3>Joueurs pas valider ni docuement ni paiement</h3>
 							{% for joueurDocuementPaiement in joueursDocuementPaiement %}
-								<p>{{joueurDocuementPaiement.prenom}} {{joueurDocuementPaiement.nom}} <br> </p>
+								<a href="{{ path('admin_joueursInfo', {'id':joueurDocuementPaiement.id}) }}" >{{joueurDocuementPaiement.prenom}} {{joueurDocuementPaiement.nom}}</a><br>
 							{%endfor%}
 
 							<br> <br> 
 
 							<h3>Joueurs ou il manque juste la validation de document</h3>
 							{% for joueurDocuement in joueursDocuement %}
-								<p>{{joueurDocuement.prenom}} {{joueurDocuement.nom}} <br> </p>
+								<a href="{{ path('admin_joueursInfo', {'id':joueurDocuement.id}) }}" >{{joueurDocuement.prenom}} {{joueurDocuement.nom}}</a><br>
 							{%endfor%}
 
 							<br> <br> 
 
 							<h3>Joueurs ou il manque juste la validation du paiement</h3>
 							{% for joueurPaiement in joueursPaiement %}
-								<p>{{joueurPaiement.prenom}} {{joueurPaiement.nom}} <br> </p>
+								<a href="{{ path('admin_joueursInfo', {'id':joueurPaiement.id}) }}" >{{joueurPaiement.prenom}} {{joueurPaiement.nom}}</a><br>
 							{%endfor%}
 
 							<br> <br> 
 
 							<h1>Joueurs inscrit cette année en 2017</h1>
 							{% for joueurLicencie in joueursLicencie %}
-								<p>{{joueurLicencie.prenom}} {{joueurLicencie.nom}} <br> </p>
+								<a href="{{ path('admin_joueursInfo', {'id':joueurLicencie.id}) }}" >{{joueurLicencie.prenom}} {{joueurLicencie.nom}}</a><br>
 							{%endfor%}
 
 							
