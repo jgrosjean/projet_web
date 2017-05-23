@@ -6,6 +6,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Form\FormBuilderInterface;
 use Admin\AdminBundle\Entity\Licence;
+use Admin\AdminBundle\Entity\fichierUpload;
 use Joueur\JoueurBundle\Entity\fichierUploadJoueur;
 use Joueur\JoueurBundle\Entity\licenceJoueur;
 use Joueur\JoueurBundle\Form\LicenceJoueurType;
@@ -139,7 +140,6 @@ class DefaultController extends Controller
           $licencejoueur->setValidationLicenceFede(0);
           $licencejoueur->setIdLicenceChoisie($licence->getID());
           $licencejoueur->setDateInscriptionLicence(new \DateTime('now'));
-          $licencejoueur->setDepotSiCertifAncien(false);
           $licencejoueur->setAnneeLicence(2017);
           $licencejoueur->setDemandeDeLicence(1);
           $licencejoueur->setValidationDocuments(false);
@@ -179,6 +179,12 @@ class DefaultController extends Controller
           $em = $this->getDoctrine()->getEntityManager();
         $licence = $em->getRepository('JoueurBundle:licenceJoueur')->findOneBy( array('idJoueur' => $this->getUser()->getId()) );
         $fichiersPresents = $em->getRepository('JoueurBundle:fichierUploadJoueur')->findBy( array('IdJoueur' => $this->getUser(), 'anneeInscription' => 2017 ));
+        $fichiersOfficiels = $em->getRepository('AdminBundle:fichierUpload')->findAll();
+        $fichiersPresentsAvant = $em->getRepository('JoueurBundle:fichierUploadJoueur')->findBy( array('IdJoueur' => $this->getUser(), 'anneeInscription' => 2017-1));
+        $fichiersPresentsAvant1 = $em->getRepository('JoueurBundle:fichierUploadJoueur')->findBy( array('IdJoueur' => $this->getUser(), 'anneeInscription' => 2017-2));
+        $majeur = $this -> getUser()->estMajeur();
+        $licenceReduction = $em->getRepository('AdminBundle:Licence')->findOneBy( array('id' => $licence->getIdLicenceChoisie() ));
+        $extension =0;
 
         $document = new fichierUploadJoueur();
         $document -> setDate(new \DateTime('now'));
@@ -202,8 +208,17 @@ class DefaultController extends Controller
                         return $this->redirect($this->generateUrl('joueur_documents'));
                     }
                     else{
+                        $extension =1;
                         return $this->render('JoueurBundle:Default:documents.html.twig', array(
                         'form' => $form->createView(),
+                        'licence' => $licence,
+                        'fichiersPresents' => $fichiersPresents,
+                        'fichiersPresentsAvant' => $fichiersPresentsAvant,
+                        'fichiersPresentsAvant1' => $fichiersPresentsAvant1,
+                        'fichiersOfficiels' => $fichiersOfficiels,
+                        'licenceReduction' => $licenceReduction,
+                        'majeur' => $majeur,
+                        'extension' => $extension,
             ));
                     }
                    
@@ -217,6 +232,12 @@ class DefaultController extends Controller
         'form' => $form->createView(),
         'licence' => $licence,
         'fichiersPresents' => $fichiersPresents,
+        'fichiersPresentsAvant' => $fichiersPresentsAvant,
+        'fichiersPresentsAvant1' => $fichiersPresentsAvant1,
+        'fichiersOfficiels' => $fichiersOfficiels,
+        'licenceReduction' => $licenceReduction,
+        'majeur' => $majeur,
+        'extension' => $extension,
             ));
     }
     

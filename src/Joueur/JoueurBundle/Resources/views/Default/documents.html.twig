@@ -13,24 +13,60 @@
         </div>
 
 
-	<div class="section">
-	        <div class="container">
+
+<div class="section">
+	    	<div class="container">
+				<div class="row">
+        {% if  extension == 1 %}
+            <h1>Problème de téléchargemnt du fichier</h1>
+            <p>Nous n'avons pas pu récupérer le fichier que vous venez de nous transférer. Avez vous bien vérifier l'extension de votre fichier? (extension permis : .pdf, jpg, jpeg, png )</p><br><br>
+            {% endif %}
 	        	<h2> Gestion des documents pour la saison 2017 </h2>
+					<div class="col-md-7">
+						<!-- Job Description -->
+						<div class="job-details-wrapper">
+							 
 				<p>
                     {% if  licence %}
-                    <h3>Votre inscription au Badminton Club d'Oullins IL FAUT LISTER TOUS LES DOCUMENTS QU IL DOIT JOINDRE</h3>
+                    <h3>Votre inscription au Badminton Club d'Oullins </h3>
                         Pour la saison débutant septembre  {{licence.anneeLicence}}
                         {% if  licence.demandeLicenceEnCours %}
                             <p>Votre demande de licence est en cours de traitement pour <a href="{{ path('joueur_licencesInfos', {'id':licence.idLicenceChoisie}) }}"> cette formule</a> depuis le {{licence.dateInscriptionLicence|date("m/d/Y")}} .</p>
-                            <p>Merci de vérifier que vous avez joint l'ensemble des documents pour l'inscription licence (certificat médicale, ... ). Voici la liste des documents que vous avez déjà fourni :</p>
+                            <p><B>Voici les documents que vous devez nous adresser </B> pour que nous puissions valider votre inscription : (soit en l'insérant ci-dessous soit en nous faisant passer un dossier papier)<br>
+                              <ul>
+                                
+                                {% if  licence.depotCertifValide == 0 %}
+                                <li>Certificat médical daté de moins de 3ans</li>
+                                <li>2ème certificat médial</li>
+                                {% else %}
+                                <li>Certificat médical daté de moins de 3 mois</li>
+                                {% endif %}
+
+                                {% if  majeur == 1%}
+                                <li>une Autorisation Parentale</li>
+                                {% endif %}
+
+                                {% if  licenceReduction.reduction == 1%}
+                                <li>justificatif pour la reduction licence</li>
+                                {% endif %}
+
+                            </ul>
+
+                            {% if  fichiersPresents == null %}
+                              <p><B> Vous n'avez fourni Aucun docuement via cette application </B></p>
+                            {% else %}
+                            
+                             Voici la liste des documents que vous avez déjà fourni :</p>
                             {% for fichierPresents in fichiersPresents %}
                                   <p>
                                     <a target="_blank" href="{{ asset('uploads/fichiersJoueur/' ~ fichierPresents.path) }}">&nbsp;&nbsp;&nbsp;- {{fichierPresents.name}} </a>  <br>
                                   </p>
                                 {% endfor %}
+                            {% endif %}
 								<br><br>
                                 <h3>Vous n'avez pas fourni tous les documents ? </h3>
 								<p> Merci de nous les founir, soit via le formulaire ci-dessous, soit par dossier papier.</p>
+                <p>(extension permis : .pdf, jpg, jpeg, png)</p>
                                 <form action="#" method="post" {{ form_enctype(form) }}>
                                   {{ form_widget(form) }}
 
@@ -47,12 +83,56 @@
                     {% endif %}
 				
 
-					<br><br><br><br>
-					<h2>Tous vos fichiers </h2>
-					<p>Voici la liste de tous les fichiers que vous avez uploader dans l'application : A FAIRE </p>
-
+						</div>
+						<!-- End Job Description -->
+					</div>
+					<!-- Sidebar -->
+					<div class="col-md-4 col-md-offset-1">
+          <br>
+						<h4>Documents disponibles :</h4>
+						<table class="jobs-list">
+               {% for fichierOfficiels in fichiersOfficiels %}
+                          <tr>
+	    						            <td class="job-position">
+                                    <a target="_blank" href="{{ asset('uploads/AdminLicence/' ~ fichierOfficiels.path) }}">&nbsp;&nbsp;&nbsp;- {{fichierOfficiels.name}} </a>  <br>
+                              </td>
+	    					          </tr>
+                {% endfor %}
+	    				</table>
+					</div>
+					<!-- End Sidebar -->
+				</div>
 			</div>
-	</div>
+		</div>
+
+
+    <div class="section">
+	    	<div class="container">
+				  <div class="row">
+            <h2>Vos fichiers des années précédentes</h2>
+					{% if  fichiersPresentsAvant == null and fichiersPresentsAvant1 == null %}
+                              <p>Aucun docuements ces 3 dernières années. </p>
+                            {% else %}
+                            
+                             Voici la liste des documents que vous avez déjà fourni :</p>
+                            {% for fichierPresentsAvant in fichiersPresentsAvant %}
+                                  <p>
+                                    <a target="_blank" href="{{ asset('uploads/fichiersJoueur/' ~ fichierPresentsAvant.path) }}">&nbsp;&nbsp;&nbsp;- {{fichierPresentsAvant.name}} </a> ({{fichierPresentsAvant.anneeInscription}}) <br>
+                                  </p>
+                            {% endfor %}
+
+                            {% for fichierPresentsAvant1 in fichiersPresentsAvant1 %}
+                                  <p>
+                                    <a target="_blank" href="{{ asset('uploads/fichiersJoueur/' ~ fichierPresentsAvant1.path) }}">&nbsp;&nbsp;&nbsp;- {{fichierPresentsAvant1.name}} </a>  ({{fichierPresentsAvant1.anneeInscription}})<br>
+                                  </p>
+                            {% endfor %}  
+
+
+
+                            {% endif %}
+        </div>
+      </div>
+    </div>
 
 	
 {% endblock %}

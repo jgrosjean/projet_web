@@ -112,13 +112,7 @@ class licenceJoueur
      */
     private $depotCertifValide;
 
-    /**
-     * @var boolean
-     *
-     * @ORM\Column(name="depotSiCertifAncien", type="boolean")
-     */
-    private $depotSiCertifAncien;
-
+    
     /**
      * @var integer
      *
@@ -493,28 +487,6 @@ class licenceJoueur
         return $this->depotCertifValide;
     }
 
-    /**
-     * Set depotSiCertifAncien
-     *
-     * @param boolean $depotSiCertifAncien
-     * @return licenceJoueur
-     */
-    public function setDepotSiCertifAncien($depotSiCertifAncien)
-    {
-        $this->depotSiCertifAncien = $depotSiCertifAncien;
-
-        return $this;
-    }
-
-    /**
-     * Get depotSiCertifAncien
-     *
-     * @return boolean 
-     */
-    public function getDepotSiCertifAncien()
-    {
-        return $this->depotSiCertifAncien;
-    }
 
     /**
      * Set anneeLicence

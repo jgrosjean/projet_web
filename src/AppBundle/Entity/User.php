@@ -428,4 +428,22 @@ class User extends BaseUser
         return $this->pays;
     }
 
+    /**
+     * Get estMajeur
+     *
+     * @return integer 
+     */
+    public function estMajeur()
+    {
+        if ((new \DateTime())->diff($this->getDateNaissance())->format('%y') < 18)
+        {
+            return 1 ; 
+        }
+        else{
+            return 0;
+        }
+
+
+    }
+
 }
