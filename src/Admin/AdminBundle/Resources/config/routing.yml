@@ -7,18 +7,12 @@ admin_licences:
 admin_creerFormLicence:
     path:     /admin/creerFormLicence
     defaults: { _controller: AdminBundle:Default:creerFormLicence }
-admin_licenceCreer:
-    path:     /admin/licenceCreer
-    defaults: { _controller: AdminBundle:Default:licenceCreer }
 admin_modifierLicence:
     path:     /admin/modifierLicence/{id}
     defaults: { _controller: AdminBundle:Default:modifierLicence }
 admin_licencesNonVisibles:
     path:     /admin/licencesNonVisibles
     defaults: { _controller: AdminBundle:Default:licencesNonVisibles }
-admin_uploadFile:
-    path:     /admin/uploadFile
-    defaults: { _controller: AdminBundle:Default:uploadFile }
 admin_gererUploadLicence:
     path:     /admin/gererUploadLicence
     defaults: { _controller: AdminBundle:Default:gererUploadLicence }

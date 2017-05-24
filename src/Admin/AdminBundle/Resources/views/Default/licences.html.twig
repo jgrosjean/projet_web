@@ -2,9 +2,20 @@
 
 {% block body %}
 
+		<div class="section section-breadcrumbs">
+          <div class="container">
+            <div class="row">
+              <div class="col-md-12">
+                <h1>Licences</h1>
+              </div>
+            </div>
+          </div>
+        </div>
+
+
 		<div class="section">
 	        <div class="container">
-			<h1>Gère les licences</h1>
+			<h1>Gèrer les licences</h1>
 	        	<a href="{{ path('admin_creerFormLicence')}}"> créer un nouveau type de licence</a><br>
 				<a href="{{ path('admin_licencesNonVisibles')}}"> gérer les licences non visibles</a><br>
 				<a href="{{ path('admin_gererUploadLicence')}}"> gérer les pdf liés aux licences</a>

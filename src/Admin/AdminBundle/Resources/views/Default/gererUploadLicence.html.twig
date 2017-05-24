@@ -1,19 +1,41 @@
 {% extends "::baseAdmin.html.twig" %}
 
 {% block body %}
+	<div class="section section-breadcrumbs">
+          <div class="container">
+            <div class="row">
+              <div class="col-md-12">
+                <h1>Licences</h1>
+              </div>
+            </div>
+          </div>
+        </div>
+
 
 	<div class="section">
 	        <div class="container">
-			<h1>Gérer les uploads des fichiers pour les licences</h1>
-			<a href="{{ path('admin_uploadFile')}}"> Uploader un nouveau fichier</a>
+			{% if  extension == 1 %}
+            <h1>Problème de téléchargemnt du fichier</h1>
+            <p>Nous n'avons pas pu récupérer le fichier que vous venez de nous transférer. Avez vous bien vérifier l'extension de votre fichier? (extension permis : .pdf, jpg, jpeg, png )</p><br><br>
+            {% endif %}
+			<h2>Gérer les téléchargements des fichiers pour les licences</h2>
+
 			<br><br><br>
-			<h3>Voici la liste des fichiers uploader dans la base de données :</h3>
+			<h3>Voici la liste des fichiers disponible :</h3>
 				{% for fichierPresents in fichiersPresents %}
 					<p>
 						<li><a target="_blank" href="{{ asset('uploads/AdminLicence/' ~ fichierPresents.path) }}">{{fichierPresents.name}} </a><a href="{{ path('admin_supprimerUploadLicence', {'id':fichierPresents.id}) }}" >      Supprimer</a>  </li> 
 
 					</p>
 				{%endfor%}
+				<br><br><br>
+			<h3>Téléchargement d'un fichier : </h3>
+			<p>Les extensions autorisées pour l'upload sont les suivantes : pdf, jpg, jpeg, png.</p>
+			<form action="#" method="post" {{ form_enctype(form) }}>
+						{{ form_widget(form) }}
+
+						<input type="submit" value="Upload Document" />
+					</form>
 	        </div>
 	    </div>
 	    

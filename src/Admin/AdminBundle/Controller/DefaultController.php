@@ -10,6 +10,7 @@ use Joueur\JoueurBundle\Entity\licenceJoueur;
 use AppBundle\Entity\User;
 use Admin\AdminBundle\Entity\fichierUpload;
 use Admin\AdminBundle\Form\LicenceType;
+use Admin\AdminBundle\Form\CreerLicenceType;
 use Admin\AdminBundle\Form\etatInscriptionType;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
@@ -54,7 +55,7 @@ class DefaultController extends Controller
     {
         $licence = new Licence();
 
-        $form = $this->get('form.factory')->create(new LicenceType, $licence);
+        $form = $this->get('form.factory')->create(new CreerLicenceType, $licence);
 
         if ($form->handleRequest($request)->isValid()) {
           $em = $this->getDoctrine()->getManager();
@@ -62,7 +63,7 @@ class DefaultController extends Controller
           $em->flush();
         
           // On redirige vers la page de visualisation de l'annonce nouvellement créée
-          return $this->redirect($this->generateUrl('admin_licenceCreer'));
+          return $this->redirect($this->generateUrl('admin_licences'));
             }
 
         return $this->render('AdminBundle:Default:creerFormLicence.html.twig', array(
@@ -71,10 +72,6 @@ class DefaultController extends Controller
 
     }
 
-     public function licenceCreerAction()
-    {
-        return $this->render('AdminBundle:Default:licenceCreer.html.twig');
-    }
     
      public function modifierLicenceAction(Request $request, Licence $licence)
     {
@@ -91,22 +88,27 @@ class DefaultController extends Controller
 
         return $this->render('AdminBundle:Default:modifierLicence.html.twig', array(
           'form' => $form->createView(),
+          'licence' => $licence,
              ));
 
     }
 
     
-    public function uploadFileAction()
+   
+    public function gererUploadLicenceAction()
     {
-        
         $document = new fichierUpload();
         $form = $this->createFormBuilder($document)
             ->add('name')
             ->add('file')
             ->getForm()
         ;
+        $extension =0;
 
-        if ($this->getRequest()->getMethod() === 'POST') {
+         $em = $this->getDoctrine()->getEntityManager();
+         $fichiersPresents = $em->getRepository('AdminBundle:fichierUpload')->findAll();
+
+         if ($this->getRequest()->getMethod() === 'POST') {
             {
                     $form->bind($this->getRequest());
                     $verif=$document->verifExtension();
@@ -118,29 +120,26 @@ class DefaultController extends Controller
                         return $this->redirect($this->generateUrl('admin_gererUploadLicence'));
                     }
                     else{
-                        return $this->render('AdminBundle:Default:uploadFileErreur.html.twig', array(
+                        $extension =1;
+                        return $this->render('AdminBundle:Default:gererUploadLicence.html.twig', array(
                         'form' => $form->createView(),
+                        'fichiersPresents' => $fichiersPresents,
+                        'extension' => $extension,
             ));
                     }
                    
                     }
             }
-           
         
             }
-        
-        return $this->render('AdminBundle:Default:uploadFile.html.twig', array(
-        'form' => $form->createView(),
-            ));
 
-    }
 
-    public function gererUploadLicenceAction()
-    {
-         $em = $this->getDoctrine()->getEntityManager();
-         $fichiersPresents = $em->getRepository('AdminBundle:fichierUpload')->findAll();
+
+
         return $this->render('AdminBundle:Default:gererUploadLicence.html.twig', array(
         'fichiersPresents' => $fichiersPresents,
+        'form' => $form->createView(),
+        'extension' => $extension,
             ));
     }
 

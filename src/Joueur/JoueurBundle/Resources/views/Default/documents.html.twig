@@ -27,11 +27,11 @@
 						<div class="job-details-wrapper">
 							 
 				<p>
-                    {% if  licence %}
+                   
                     <h3>Votre inscription au Badminton Club d'Oullins </h3>
-                        Pour la saison débutant septembre  {{licence.anneeLicence}}
-                        {% if  licence.demandeLicenceEnCours %}
-                            <p>Votre demande de licence est en cours de traitement pour <a href="{{ path('joueur_licencesInfos', {'id':licence.idLicenceChoisie}) }}"> cette formule</a> depuis le {{licence.dateInscriptionLicence|date("m/d/Y")}} .</p>
+                        Pour la saison débutant septembre 2017
+                     
+                           
                             <p><B>Voici les documents que vous devez nous adresser </B> pour que nous puissions valider votre inscription : (soit en l'insérant ci-dessous soit en nous faisant passer un dossier papier)<br>
                               <ul>
                                 
@@ -73,14 +73,10 @@
                                   <input type="submit" value="Upload Document" />
                                 </form>
                             <B>{{licence.commentaireLicence}}</B>
-                        {% endif %}
-                          {% if  licence.validationLicenceFede %}
-                            <p>Vous êtes licencié au club, et vous avez souscrit à <a href="{{ path('joueur_licencesInfos', {'id':licence.idLicenceChoisie}) }}"> cette formule</a></p>
-                        {% endif %}
-                    {% else %}
-                      <p><B>Vous n'avez pas encore fait de demande d'inscription au club pour cette année.</B></p>
-                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ->  <a href="{{ path('joueur_licences')}}"> inscription</a>
-                    {% endif %}
+                       
+                  
+                    
+            
 				
 
 						</div>

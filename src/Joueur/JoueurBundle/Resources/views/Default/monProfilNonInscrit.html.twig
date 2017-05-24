@@ -1,0 +1,77 @@
+{% extends "::baseJoueur.html.twig" %}
+
+{% block body %}
+
+
+		<div class="section section-breadcrumbs">
+			<div class="container">
+				<div class="row">
+					<div class="col-md-12">
+						<h1>Mon profil</h1>
+					</div>
+				</div>
+			</div>
+		</div>
+    
+
+	    
+	
+		<div class="section">
+          <div class="container">
+ 
+            <h2>Généralités</h2>
+            <div class="row">
+              <div class="col-md-4 col-sm-6">
+                <div class="service-wrapper">
+                  <img src="{{ asset('img/info.png') }}" alt="Service 1">
+                  <h3>Informations personnelles<br><br></h3>
+                  <p><B>Nom :</B> {{ app.user.nom }} <br>
+                    <B> Prenom : </B> {{ app.user.prenom }}<br>
+                    <B> date de naissance : </B>{{ app.user.dateNaissance|date('d/m/Y') }}<br>
+                    <B> sexe : </B>{{ app.user.sexe }}<br>
+                    <B> civiité : </B>{{ app.user.civilite }}<br>
+                    <B> nationalité : </B>{{ app.user.nationalite }}<br>
+                              <B> Adresse : </B>{{ app.user.adresse }}<br>
+                    <B> Code Postal : </B>{{ app.user.codePostal }}<br>
+                     <B>ville : </B>{{ app.user.ville }}<br>
+                     <B>N° de téléphone : </B>{{ app.user.telephone }}<br>
+                     <B>E-mail : </B>{{ app.user.email }}<br><br>
+                    <B>Personne à contacter en cas d'urgence: </B>{{ app.user.personneAContacterUrgence }} ({{ app.user.numeroPersonneUrgence }} ) <br>
+   
+                  </p>
+                  <a href="{{ path('joueur_modifDonneesPerso')}}" class="btn">modifier</a>
+                </div>
+               
+              </div>
+              <br>
+		        			 <p>
+
+                   <h3>Votre inscription au Badminton Club d'Oullins :</h3>
+                    
+                      <p><B>Vous n'avez pas encore fait de demande d'inscription au club pour cette année.</B></p>
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ->  <a href="{{ path('joueur_licences')}}"> inscription</a>
+            
+
+                  </p>             
+            </div>
+          </div>
+      </div>
+
+
+<div class="section">
+          <div class="container">
+            <h2>Toutes vos inscriptions au BACO</h2>
+            <p>bla bla blaaaa.....</p>
+
+          </div>
+</div>
+
+
+
+
+
+
+
+
+	
+{% endblock %}

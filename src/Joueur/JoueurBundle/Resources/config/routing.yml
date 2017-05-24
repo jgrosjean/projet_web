@@ -28,5 +28,7 @@ joueur_inscriptionLicenceEtape1:
 joueur_inscriptionLicenceEtape2:
     path:     /joueur/inscriptionLicenceEtape2
     defaults: { _controller: JoueurBundle:Default:inscriptionLicenceEtape2 }
-
+joueur_contact:
+    path:     /joueur/contact
+    defaults: { _controller: JoueurBundle:Default:contact }
 

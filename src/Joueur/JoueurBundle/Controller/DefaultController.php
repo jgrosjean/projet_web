@@ -22,50 +22,39 @@ class DefaultController extends Controller
         return $this->render('JoueurBundle:Default:index.html.twig');
     }
 
+    public function contactAction()
+    {
+
+        return $this->render('JoueurBundle:Default:contact.html.twig');
+    }
+
     public function monProfilAction()
     {
         
         $em = $this->getDoctrine()->getEntityManager();
-        $licence = $em->getRepository('JoueurBundle:licenceJoueur')->findOneBy( array('idJoueur' => $this->getUser()->getId()) );
-        $fichiersPresents = $em->getRepository('JoueurBundle:fichierUploadJoueur')->findBy( array('IdJoueur' => $this->getUser(), 'anneeInscription' => 2017 ));
+        $licence = $em->getRepository('JoueurBundle:licenceJoueur')->findOneBy( array('idJoueur' => $this->getUser()->getId(), 'anneeLicence' => 2017) );
 
-        $document = new fichierUploadJoueur();
-        $document -> setDate(new \DateTime('now'));
-        $document -> setAnneeInscription(2017);
-        $document -> setIdJoueur($this->getUser()->getId());
-        $form = $this->createFormBuilder($document)
-            ->add('name')
-            ->add('file')
-            ->getForm()
-        ;
+        if ($licence != null)
+        {
+            $licenceAdmin = $em->getRepository('AdminBundle:Licence')->findOneBy( array('id' => $licence->getIdLicenceChoisie()) );
 
-        if ($this->getRequest()->getMethod() === 'POST') {
-            {
-                    $form->bind($this->getRequest());
-                    $verif=$document->verifExtension();
-                    if ($form->isValid()) {
-                    $em = $this->getDoctrine()->getEntityManager();
-                    if( $verif == 1 ){
-                        $em->persist($document);
-                        $em->flush();
-                        return $this->redirect($this->generateUrl('joueur_monProfil'));
-                    }
-                    else{
-                        return $this->render('JoueurBundle:Default:uploadFileErreur.html.twig', array(
-                        'form' => $form->createView(),
-            ));
-                    }
-                   
-                    }
-            }
-           
+            return $this->render('JoueurBundle:Default:monProfil.html.twig', array(
+                                'licence' => $licence,
+                                'licenceAdmin' => $licenceAdmin,
+                                    ));
+        }
+        else
+        {
+            return $this->render('JoueurBundle:Default:monProfilNonInscrit.html.twig', array(
+                                'licence' => $licence,
+                                    ));
+        }
         
-            }
-        
+       
+
         return $this->render('JoueurBundle:Default:monProfil.html.twig', array(
-        'form' => $form->createView(),
         'licence' => $licence,
-        'fichiersPresents' => $fichiersPresents,
+        'licenceAdmin' => $licenceAdmin,
             ));
     }
 
@@ -141,7 +130,7 @@ class DefaultController extends Controller
           $licencejoueur->setIdLicenceChoisie($licence->getID());
           $licencejoueur->setDateInscriptionLicence(new \DateTime('now'));
           $licencejoueur->setAnneeLicence(2017);
-          $licencejoueur->setDemandeDeLicence(1);
+          $licencejoueur->setDemandeDeLicence(0);
           $licencejoueur->setValidationDocuments(false);
           $licencejoueur->setValidationPaiement(false);
           $licencejoueur->setDemandeLicenceEnCours(true);

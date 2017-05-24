@@ -7,7 +7,7 @@ use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
 
-class LicenceType extends AbstractType
+class CreerLicenceType extends AbstractType
 {
     /**
      * @param FormBuilderInterface $builder
@@ -17,12 +17,12 @@ class LicenceType extends AbstractType
     {
          $builder
           ->add('intitule', 'text')
-
+          
           ->add('descriptionComplete',          'text', array(    'label'    => 'Description complète',    'required' => true,))
           ->add('description1',          'text', array(    'label'    => 'Description succinte 1',    'required' => true,))
           ->add('description2',          'text', array(    'label'    => 'Description succinte 2',    'required' => true,))
           ->add('description3',          'text', array(    'label'    => 'Description succinte 3',    'required' => true,))
-
+           ->add('reduction',       'checkbox', array(    'label'    => 'reducion ?',    'required' => false,))
           ->add('prix')
           ->add('categorie',       'choice', array('choices' => array('adulte'=>'adulte',
                                                                       'jeune'=>'jeune')))
