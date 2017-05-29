@@ -2,53 +2,62 @@
 
 {% block body %}
 
-<!-- Call to Action Bar -->
-	    <div class="section section-white">
-			<div class="container">
-				<div class="row">
-					<div class="col-md-12">
-						<div class="calltoaction-wrapper">
-							<h3>Joueurs</h3> 
-						</div>
-					</div>
-				</div>
-			</div>
-		</div>
-		<!-- End Call to Action Bar -->
+	<div class="section section-breadcrumbs">
+          <div class="container">
+            <div class="row">
+              <div class="col-md-12">
+                <h1>Joueurs</h1>
+              </div>
+            </div>
+          </div>
+        </div>
+
 
 
 	<div class="section">
 	        <div class="container">
 	        	<div class="row">
 	        		
+						
 
-		        			<h1>Joueurs inscription en cours</h1>
+								<h2>Inscription à valider</h2>
 								
 										
-							<h3>Joueurs pas valider ni docuement ni paiement</h3>
-							{% for joueurDocuementPaiement in joueursDocuementPaiement %}
-								<a href="{{ path('admin_joueursInfo', {'id':joueurDocuementPaiement.id}) }}" >{{joueurDocuementPaiement.prenom}} {{joueurDocuementPaiement.nom}}</a><br>
-							{%endfor%}
 
-							<br> <br> 
-
-							<h3>Joueurs ou il manque juste la validation de document</h3>
+							<h3>Manque des documents</h3>
 							{% for joueurDocuement in joueursDocuement %}
 								<a href="{{ path('admin_joueursInfo', {'id':joueurDocuement.id}) }}" >{{joueurDocuement.prenom}} {{joueurDocuement.nom}}</a><br>
 							{%endfor%}
 
-							<br> <br> 
+							<br>
 
-							<h3>Joueurs ou il manque juste la validation du paiement</h3>
+							<h3>Manque le paiement</h3>
 							{% for joueurPaiement in joueursPaiement %}
 								<a href="{{ path('admin_joueursInfo', {'id':joueurPaiement.id}) }}" >{{joueurPaiement.prenom}} {{joueurPaiement.nom}}</a><br>
+							{%endfor%}
+							<br>
+
+							<h3>Dossier complet</h3>
+							<p>Vous avez indiqué que le dossier est complet (documents et paiement), pour poursuivre l'inscription il faut cocher la case demande de licence</p>
+						{% for joueurAttente in joueursAttente %}
+								<a href="{{ path('admin_joueursInfo', {'id':joueurAttente.id}) }}" >{{joueurAttente.prenom}} {{joueurAttente.nom}}</a><br>
 							{%endfor%}
 
 							<br> <br> 
 
-							<h1>Joueurs inscrit cette année en 2017</h1>
+							<h2>En attente de validation sur Poona</h2>
+							<p> Ces personnes ont fait une demande de licence que vous avez accépté. Pour finaliser l'inscription, merci de vous connecter sur poona et de faire le paiement.</p>
 							{% for joueurLicencie in joueursLicencie %}
 								<a href="{{ path('admin_joueursInfo', {'id':joueurLicencie.id}) }}" >{{joueurLicencie.prenom}} {{joueurLicencie.nom}}</a><br>
+							{%endfor%}
+							<br><br>
+
+							<h2>Recherche de Joueurs</h2>
+					<p> A FAIRE</p>
+							<h2>Les inscrits au clubs : </h2>
+							<p> Ces personnes sont inscrits au club</p>
+							{% for joueurLicencieFinal in joueursLicencieFinal %}
+								<a href="{{ path('admin_joueursInfo', {'id':joueurLicencieFinal.id}) }}" >{{joueurLicencieFinal.prenom}} {{joueurLicencieFinal.nom}}</a><br>
 							{%endfor%}
 
 							

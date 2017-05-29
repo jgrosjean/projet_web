@@ -162,57 +162,113 @@ class DefaultController extends Controller
 
     public function joueursAction()
     {
+    
+
+
         $em = $this->getDoctrine()->getManager();
 
         $query = $em->createQuery(
             'SELECT j
             FROM AppBundle:User j, JoueurBundle:licenceJoueur l
-            WHERE j.id = l.idJoueur and l.anneeLicence = 2017 and l.demandeLicenceEnCours = 0'
+            WHERE j.id = l.idJoueur and l.anneeLicence = 2017 and l.demandeDeLicence = 1 and l.validationLicenceFede != 1'
         );
         $joueursLicencie = $query->getResult();
 
         $query1 = $em->createQuery(
             'SELECT j
             FROM AppBundle:User j, JoueurBundle:licenceJoueur l
-            WHERE j.id = l.idJoueur and l.validationDocuments = 1 and l.validationPaiement = 0 and l.anneeLicence = 2017 and l.demandeLicenceEnCours = 1'
+            WHERE j.id = l.idJoueur and l.validationPaiement = 0 and l.anneeLicence = 2017 and l.demandeLicenceEnCours = 1'
         );
 
         $joueursPaiement = $query1->getResult();
 
 
-        $query2 = $em->createQuery(
-            'SELECT j
-            FROM AppBundle:User j, JoueurBundle:licenceJoueur l
-            WHERE j.id = l.idJoueur and l.validationDocuments = 0 and l.validationPaiement = 0 and l.anneeLicence = 2017 and l.demandeLicenceEnCours = 1'
-        );
-
-        $joueursDocuementPaiement = $query2->getResult();
+       
 
         $query3 = $em->createQuery(
             'SELECT j
             FROM AppBundle:User j, JoueurBundle:licenceJoueur l
-            WHERE j.id = l.idJoueur and l.validationDocuments = 0 and l.validationPaiement = 1 and l.anneeLicence = 2017 and l.demandeLicenceEnCours = 1'
+            WHERE j.id = l.idJoueur and l.validationDocuments = 0 and l.anneeLicence = 2017 and l.demandeLicenceEnCours = 1'
         );
 
         $joueursDocuement = $query3->getResult();
 
+        $query4 = $em->createQuery(
+            'SELECT j
+            FROM AppBundle:User j, JoueurBundle:licenceJoueur l
+            WHERE j.id = l.idJoueur and l.anneeLicence = 2017 and l.validationLicenceFede = 1
+            ORDER BY j.nom ASC'
+        );
+        $joueursLicencieFinal = $query4->getResult();
+
+        $query5 = $em->createQuery(
+            'SELECT j
+            FROM AppBundle:User j, JoueurBundle:licenceJoueur l
+            WHERE j.id = l.idJoueur and l.validationDocuments = 1 and l.validationPaiement = 1 and l.anneeLicence = 2017 and l.demandeDeLicence = 0'
+        );
+
+        $joueursAttente = $query5->getResult();
+
         return $this->render('AdminBundle:Default:joueurs.html.twig', array(
         'joueursLicencie' => $joueursLicencie,
-        'joueursDocuementPaiement' => $joueursDocuementPaiement,
         'joueursDocuement' => $joueursDocuement,
         'joueursPaiement' => $joueursPaiement,
+        'joueursLicencieFinal' => $joueursLicencieFinal,
+        'joueursAttente' => $joueursAttente,
             ));
     }
 
-     public function joueursInfoAction(User $user)
+     public function joueursInfoAction(Request $request, User $user)
     {
+        
 
         $em = $this->getDoctrine()->getEntityManager();
-            $licenceActuelle = $em->getRepository('JoueurBundle:licenceJoueur')->findOneBy( array('idJoueur' =>  $user->getId(), 'anneeLicence' => 2017 ) );
+            $licence = $em->getRepository('JoueurBundle:licenceJoueur')->findOneBy( array('idJoueur' =>  $user->getId(), 'anneeLicence' => 2017 ) );
+        
+        $licenceAdmin = $em->getRepository('AdminBundle:Licence')->findOneBy( array('id' => $licence->getIdLicenceChoisie()) );
+        $fichiersPresents = $em->getRepository('JoueurBundle:fichierUploadJoueur')->findBy( array('IdJoueur' => $user->getId(), 'anneeInscription' => 2017 ));
+        $majeur = $user -> estMajeur();
+        $licenceReduction = $em->getRepository('AdminBundle:Licence')->findOneBy( array('id' => $licence->getIdLicenceChoisie() ));
+        $verifDemandeDeLicence = false;
+
+        if($licence->getDemandeDeLicence() == 1)
+        {
+            $verifDemandeDeLicence = 1;
+        }
+
+         $form = $this->get('form.factory')->create(new etatInscriptionType, $licence);
+
+        if ($form->handleRequest($request)->isValid()) {
+          $em = $this->getDoctrine()->getManager();
+          if($verifDemandeDeLicence ==1 )
+          {
+              $licence->setDemandeDeLicence(1);
+          }
+          $em->persist($licence);
+          $em->flush();
+        
+          
+          // On redirige vers la page de visualisation de l'annonce nouvellement créée
+          return $this->render('AdminBundle:Default:joueursInfo.html.twig', array(
+        'user' => $user,
+        'licence' => $licence,
+        'licenceAdmin' => $licenceAdmin,
+        'fichiersPresents' => $fichiersPresents,
+        'licenceReduction' => $licenceReduction,
+        'majeur' => $majeur,
+        'form' => $form->createView(),
+            ));
+
+            }
 
         return $this->render('AdminBundle:Default:joueursInfo.html.twig', array(
         'user' => $user,
-        'licenceActuelle' => $licenceActuelle,
+        'licence' => $licence,
+        'licenceAdmin' => $licenceAdmin,
+        'fichiersPresents' => $fichiersPresents,
+        'licenceReduction' => $licenceReduction,
+        'majeur' => $majeur,
+        'form' => $form->createView(),
             ));
     }
 
@@ -223,24 +279,6 @@ class DefaultController extends Controller
             ));
     }
 
-    public function modifInscriptionJoueurAction(Request $request, licenceJoueur $licenceAModif )
-    {
-         $form = $this->get('form.factory')->create(new etatInscriptionType, $licenceAModif);
 
-        if ($form->handleRequest($request)->isValid()) {
-          $em = $this->getDoctrine()->getManager();
-          $em->persist($licenceAModif);
-          $em->flush();
-        
-          // On redirige vers la page de visualisation de l'annonce nouvellement créée
-          return $this->redirect($this->generateUrl('admin_licences'));
-            }
-
-        return $this->render('AdminBundle:Default:modifInscriptionJoueur.html.twig', array(
-          'form' => $form->createView(),
-             ));
-
-
-    }
     
 }

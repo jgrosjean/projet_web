@@ -2,12 +2,22 @@
 
 {% block body %}
 
-    <div class="section section-white">
+   	<div class="section section-breadcrumbs">
+          <div class="container">
+            <div class="row">
+              <div class="col-md-12">
+                <h1>informations joueurs</h1>
+              </div>
+            </div>
+          </div>
+        </div>
+
+         <div class="section section-white">
 			<div class="container">
 				<div class="row">
 					<div class="col-md-12">
 						<div class="calltoaction-wrapper">
-							<h3>informations joueurs</h3> 
+							<h3>{{ user.prenom }} {{ user.nom }}</h3> 
 						</div>
 					</div>
 				</div>
@@ -36,36 +46,135 @@
                   </p>
                 </div>
               </div>
+              
+
+                   
  			 </div>
 		</div>
 		<div class="section">
           <div class="container">
-            <h2>information sur la licence actuelle</h2>
+            <h2>information sur la licence actuelle septembre {{licence.anneeLicence}}</h2>
               <p>
-                  {% if licenceActuelle.demandeLicenceEnCours == 1 %}
-                      Demande de licence en cours <br>
 
-                        {% if licenceActuelle.validationDocuments == 0 and licenceActuelle.validationPaiement == 0 %}
-                            Ce qu'il manque pour son inscription : Documents et paiement
-                        {% elseif licenceActuelle.validationDocuments == 1 and licenceActuelle.validationPaiement == 0 %}
-                            Ce qu'il manque pour son inscription : paiement
-                        {% elseif licenceActuelle.validationDocuments == 0 and licenceActuelle.validationPaiement == 1 %}
-                            Ce qu'il manque pour son inscription : documents
+                     <p>Ce joueur a fait une demande pour  <a href="{{ path('joueur_licencesInfos', {'id':licence.idLicenceChoisie}) }}"> cette formule</a> le {{licence.dateInscriptionLicence|date("m/d/Y")}} .</p>
+                        {% if  licence.demandeLicenceEnCours == 1  and licence.demandeDeLicence == 0 %}
+                           
+                                <p><B>Vous n'avez pas encore confirmé cette inscription.</B></p><br>
+                            </p>
+                              <h3>Documents</h3>
+                              {% if  licence.validationDocuments == 0%}
+                                <p> Les documents ne sont <B>PAS validés</b> .</p>
+                              {% else %}
+                                <p> Les documents sont <b> validés</b> .</p>
+                              {% endif %}
+
+                               <p>Voici les documents que le joueur doit fournir : </p>
+                              <ul>
+                                
+                                {% if  licence.depotCertifValide == 0 %}
+                                <li>Certificat médical daté de moins de 3ans</li>
+                                <li>2ème certificat médial</li>
+                                {% else %}
+                                <li>Certificat médical daté de moins de 3 mois</li>
+                                {% endif %}
+
+                                {% if  majeur == 1%}
+                                <li>une Autorisation Parentale</li>
+                                {% endif %}
+
+                                {% if  licenceReduction.reduction == 1%}
+                                <li>justificatif pour la reduction licence</li>
+                                {% endif %}
+
+                                </ul>
+
+                              {% if  fichiersPresents == null %}
+                              <p><B> Vous n'avez fourni Aucun docuement via cette application </B></p>
+                            {% else %}
+                            
+                             Voici la liste des documents que ce joueur a fourni pour cette année :</p>
+                            {% for fichierPresents in fichiersPresents %}
+                                  <p>
+                                    <a target="_blank" href="{{ asset('uploads/fichiersJoueur/' ~ fichierPresents.path) }}">&nbsp;&nbsp;&nbsp;- {{fichierPresents.name}} </a>  <br>
+                                  </p>
+                                {% endfor %}
+                            {% endif %}
+
+
+                              <br>
+
+                               <h3>Paiement</h3>
+                              {% if  licence.validationPaiement == 0%}
+                                <p> La réception du réglement n'est  <B>PAS validé</b> ({{ licenceAdmin.prix }}€)</p>
+                              {% else %}
+                              <p> La réception du réglement est <b> validé</b>  ({{ licenceAdmin.prix }}€)</p>
+                              {% endif %}
+                          
+                            
                         {% endif %}
 
+                          {% if  licence.demandeDeLicence and licence.ValidationLicenceFede != 1 %}
+                            <p>Vous avez accepté cette inscription, merci de valider l'inscription sur poona.</p>
+                              <h3>Documents</h3>
+                              {% if  licence.validationDocuments == 0%}
+                                <p> Les documents ne sont <B>PAS</b> validés.</p>
+                              {% else %}
+                                <p> Les documents sont validés.</p>
+                              {% endif %}
+                              <br>
 
-                  {% else  %}
-                      {{ user.prenom }} {{ user.nom }} est licencié au club
-                  {% endif %}
+                               <h3>Paiement</h3>
+                              {% if  licence.validationPaiement == 0%}
+                                <p> La réception du réglement n'est  <B>PAS</b> validé ({{ licenceAdmin.prix }}€)</p>
+                              {% else %}
+                              <p> La réception du réglement est validé ({{ licenceAdmin.prix }}€)</p>
+                              {% endif %}
+                          
+                          {% endif %}
+                          
+                          {% if  licence.ValidationLicenceFede == 1 %}
+                            <p><B>Personne inscrite au club</B></p>
+                              <h3>Documents</h3>
+                              {% if  licence.validationDocuments == 0%}
+                                <p> Les documents ne sont <B>PAS</b> validés.</p>
+                              {% else %}
+                                <p> Les documents sont validés.</p>
+                              {% endif %}
+                              <br>
+
+                               <h3>Paiement</h3>
+                              {% if  licence.validationPaiement == 0%}
+                                <p> La réception du réglement n'est  <B>PAS</b> validé ({{ licenceAdmin.prix }}€)</p>
+                              {% else %}
+                              <p> La réception du réglement est validé ({{ licenceAdmin.prix }}€)</p>
+                              {% endif %}
+                          
+                         
+                          {% endif %}
                   <br>
-                  Quelle licence a t il pris ? : <a href="{{ path('admin_licenceInfo', {'id':licenceActuelle.idLicenceChoisie}) }}" >celle la</a><br>
-                 
+
+                  <h3>Modifier l'état d'inscription</h3>
+                  {% if  licence.demandeDeLicence == 1%}
+                    <p>Vous avez déjà effectué la demande de licence, cela ne sert à rien de modifier la demande d'enregistrement de la licence</p>
+                  {% endif %}
+                  <p>{{ form(form)}}</p>
                  <br>
 
                  
-                 <a href="{{ path('admin_modifInscriptionJoueur', {'id':licenceActuelle.id}) }}" >modifier l'état d'inscription de joueur </a><br>
+          
 
               
+              </p>
+ 			 </div>
+		</div>
+
+
+     <div class="section">
+          <div class="container">
+            <h2>L'ensemble des documents fournis : </h2>
+              <p>
+                 A FAIRE
+
               </p>
  			 </div>
 		</div>
@@ -74,7 +183,7 @@
           <div class="container">
             <h2>Quelles licences les autres années ?</h2>
               <p>
-                 
+                 A FAIRE
 
               </p>
  			 </div>

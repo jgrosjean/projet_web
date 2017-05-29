@@ -31,6 +31,3 @@ admin_joueursInfo:
 admin_licenceInfo:
     path:     /admin/licenceInfo/{id}
     defaults: { _controller: AdminBundle:Default:licenceInfo }
-admin_modifInscriptionJoueur:
-    path:     /admin/modifInscriptionJoueur/{id}
-    defaults: { _controller: AdminBundle:Default:modifInscriptionJoueur }
