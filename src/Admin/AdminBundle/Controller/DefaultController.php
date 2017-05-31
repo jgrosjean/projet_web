@@ -14,6 +14,9 @@ use Admin\AdminBundle\Form\CreerLicenceType;
 use Admin\AdminBundle\Form\etatInscriptionType;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
+use Symfony\Component\HttpFoundation\StreamedResponse;
+use Symfony\Component\HttpFoundation\Response;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 
 
 
@@ -163,8 +166,6 @@ class DefaultController extends Controller
     public function joueursAction()
     {
     
-
-
         $em = $this->getDoctrine()->getManager();
 
         $query = $em->createQuery(
@@ -208,6 +209,8 @@ class DefaultController extends Controller
         );
 
         $joueursAttente = $query5->getResult();
+
+        
 
         return $this->render('AdminBundle:Default:joueurs.html.twig', array(
         'joueursLicencie' => $joueursLicencie,
@@ -279,6 +282,112 @@ class DefaultController extends Controller
             ));
     }
 
+    public function recupLicencieCSVAction()
+    {
+        
+        $response = new StreamedResponse();
+        $response->setCallback(function() {
+        $handle = fopen('php://output', 'w+');
 
+        // Add the header of the CSV file  ->format('d-m-Y')  new \DateTime('now')
+        $dateNow = new \DateTime('now');
+        $dateStringNow= $dateNow->format('d-m-Y');
+        fputcsv($handle, array('Tous les licencié au', $dateStringNow),';');
+         fputcsv($handle, array(''),';');
+        fputcsv($handle, array('Name', 'Prénom','date De Naissance', 'Email', 'Civilté', 'adresse', 'code postal', 'Personne à contacter', 'numéro personne à contacter'),';');
+
+
+        // Query data from database
+        $em = $this->getDoctrine()->getManager();
+        $query4 = $em->createQuery(
+            'SELECT j
+            FROM AppBundle:User j, JoueurBundle:licenceJoueur l
+            WHERE j.id = l.idJoueur and l.anneeLicence = 2017 and l.validationLicenceFede = 1
+            ORDER BY j.nom ASC'
+        );
+        $results = $query4->getResult();
+
+       foreach ($results as $result){
+           fputcsv(
+               $handle,
+               [$result->getNom(), $result->getPrenom(), $result->getDateNaissance()->format('d-m-Y'), $result->getEmail(),$result->getCivilite(),$result->getAdresse(),$result->getCodePostal(),$result->getPersonneAContacterUrgence(),$result->getNumeroPersonneUrgence()],
+               ';'
+           );
+       }
+       
+
+   
+
+        fclose($handle);
+    });
+
+  $response->setStatusCode(200);
+    $response->headers->set('Content-Type', 'text/csv; charset=utf-8');
+    $response->headers->set('Content-Disposition', 'attachment; filename="export_Licencié_club.csv"');
+   
+
+    return $response;
+ 
+      
+    
+    }
+
+    /**
+    * @ParamConverter("licence", options={"mapping": {"licence_id": "id"}})
+    */
+    public function recupLicencieParLicenceCSVAction(Licence $licence)
+    {
+      
+        
+        $response = new StreamedResponse();
+
+        $response->setCallback(function() use ($licence){
+        $handle = fopen('php://output', 'w+');
+
+
+        // Add the header of the CSV file  ->format('d-m-Y')  new \DateTime('now')
+        $dateNow = new \DateTime('now');
+        $dateStringNow= $dateNow->format('d-m-Y');
+        fputcsv($handle, array('date téléchargement :', $dateStringNow),';');
+        fputcsv($handle, array('Intitulé licence :', $licence->getIntitule() ),';');
+        fputcsv($handle, array('catégorie:', $licence->getCategorie() ),';');
+        fputcsv($handle, array('Name', 'Prénom','date De Naissance', 'Email', 'Civilté', 'adresse', 'code postal', 'Personne à contacter', 'numéro personne à contacter'),';');
+
+
+        // Query data from database
+        $em = $this->getDoctrine()->getManager();
+        
+        $query4 = $em->createQuery(
+            'SELECT j
+            FROM AppBundle:User j, JoueurBundle:licenceJoueur l
+            WHERE j.id = l.idJoueur and l.anneeLicence = 2017 and l.validationLicenceFede = 1 and l.idLicenceChoisie = :id
+            ORDER BY j.nom ASC'
+        )->setParameter('id', $licence->getId());
+        $results = $query4->getResult();
+
+
+        if($results == null)
+        {
+            fputcsv($handle, array('pas de résultat'),';');
+        }
+       foreach ($results as $result){
+           fputcsv(
+               $handle,
+               [$result->getNom(), $result->getPrenom(), $result->getDateNaissance()->format('d-m-Y'), $result->getEmail(),$result->getCivilite(),$result->getAdresse(),$result->getCodePostal(),$result->getPersonneAContacterUrgence(),$result->getNumeroPersonneUrgence()],
+               ';'
+           );
+       }
+    
+        fclose($handle);
+    });
+
+
+
+    $response->setStatusCode(200);
+    $response->headers->set('Content-Type', 'text/csv; charset=utf-8');
+    $response->headers->set('Content-Disposition', 'attachment; filename="export_Licencié_club.csv"');
+
+    return $response;
+    }
     
 }

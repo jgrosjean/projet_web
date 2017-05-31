@@ -31,3 +31,11 @@ admin_joueursInfo:
 admin_licenceInfo:
     path:     /admin/licenceInfo/{id}
     defaults: { _controller: AdminBundle:Default:licenceInfo }
+admin_recupLicencieCSV:
+    path:     /admin/recupLicencieCSV/export.csv
+    defaults: { _controller: AdminBundle:Default:recupLicencieCSV }
+admin_recupLicencieParLicenceCSV:
+    path:     /admin/recupLicencieParLicenceCSV/export.csv/{licence_id}
+    defaults: { _controller: AdminBundle:Default:recupLicencieParLicenceCSV }
+    requirements:
+        id: \d+

@@ -56,10 +56,12 @@
 					<p> A FAIRE</p>
 							<h2>Les inscrits au clubs : </h2>
 							<p> Ces personnes sont inscrits au club</p>
+							<a href="{{ path('admin_recupLicencieCSV') }}" >Téléchargement CSV de l'ensemble des joueurs inscrits au club.</a><br>
 							{% for joueurLicencieFinal in joueursLicencieFinal %}
 								<a href="{{ path('admin_joueursInfo', {'id':joueurLicencieFinal.id}) }}" >{{joueurLicencieFinal.prenom}} {{joueurLicencieFinal.nom}}</a><br>
 							{%endfor%}
 
+							
 							
 		        	
 	        	</div>
