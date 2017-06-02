@@ -29,10 +29,13 @@
 				<p>
                    
                     <h3>Votre inscription au Badminton Club d'Oullins </h3>
+                    {% if  licence %}
                         Pour la saison débutant septembre 2017
                      
                            
                             <p><B>Voici les documents que vous devez nous adresser </B> pour que nous puissions valider votre inscription : (soit en l'insérant ci-dessous soit en nous faisant passer un dossier papier)<br>
+                              
+                              
                               <ul>
                                 
                                 {% if  licence.depotCertifValide == 0 %}
@@ -51,6 +54,7 @@
                                 {% endif %}
 
                             </ul>
+                            
 
                             {% if  fichiersPresents == null %}
                               <p><B> Vous n'avez fourni Aucun docuement via cette application </B></p>
@@ -74,8 +78,9 @@
                                 </form>
                             <B>{{licence.commentaireLicence}}</B>
                        
-                  
-                    
+                    {% else %}
+                    <p>Vous n'avez pas fait de demande de licence, il n'est donc pas possible de nous founir des documents via cette application</p>
+                    {% endif %}
             
 				
 

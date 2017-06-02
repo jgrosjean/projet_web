@@ -24,7 +24,16 @@ class DefaultController extends Controller
 {
     public function indexAction()
     {
-        return $this->render('AdminBundle:Default:index.html.twig');
+         $em = $this->getDoctrine()->getEntityManager();
+         $licence = $em->getRepository('JoueurBundle:licenceJoueur')->findBy( array('validationLicenceFede' =>  1, 'anneeLicence' => 2017 ) );
+         $licenceToutes = $em->getRepository('JoueurBundle:licenceJoueur')->findBy( array( 'anneeLicence' => 2017 ) );
+
+         $nbrJoueursLicencie = COUNT($licence);
+         $nbrJoueursEnCours = COUNT($licenceToutes) - $nbrJoueursLicencie;
+
+        return $this->render('AdminBundle:Default:index.html.twig',array('nbrJoueursLicencie' => $nbrJoueursLicencie,
+                                                                         'nbrJoueursEnCours' => $nbrJoueursEnCours,
+                                                                                        ));
     }
 
     public function licencesAction()
@@ -34,8 +43,7 @@ class DefaultController extends Controller
             $licencesSeniorReduc = $em->getRepository('AdminBundle:Licence')->findBy( array('categorie' =>  "adulte", 'visible' => true, 'reduction' => true  ) );
             $licencesJeune = $em->getRepository('AdminBundle:Licence')->findBy( array('categorie' =>  "jeune", 'visible' => true, 'reduction' => false  ) );
             $licencesJeuneReduc = $em->getRepository('AdminBundle:Licence')->findBy( array('categorie' =>  "jeune", 'visible' => true, 'reduction' => true  ) );
-            
-            
+
             
             return $this->render('AdminBundle:Default:licences.html.twig',array('licencesSenior' => $licencesSenior,
                                                                                  'licencesSeniorReduc' => $licencesSeniorReduc,  
@@ -79,7 +87,7 @@ class DefaultController extends Controller
      public function modifierLicenceAction(Request $request, Licence $licence)
     {
         $form = $this->get('form.factory')->create(new LicenceType, $licence);
-
+        
         if ($form->handleRequest($request)->isValid()) {
           $em = $this->getDoctrine()->getManager();
           $em->persist($licence);
@@ -165,8 +173,8 @@ class DefaultController extends Controller
 
     public function joueursAction()
     {
-    
         $em = $this->getDoctrine()->getManager();
+        
 
         $query = $em->createQuery(
             'SELECT j
@@ -174,6 +182,7 @@ class DefaultController extends Controller
             WHERE j.id = l.idJoueur and l.anneeLicence = 2017 and l.demandeDeLicence = 1 and l.validationLicenceFede != 1'
         );
         $joueursLicencie = $query->getResult();
+        $nbrJoueursLicencie = COUNT($joueursLicencie);
 
         $query1 = $em->createQuery(
             'SELECT j
@@ -181,10 +190,8 @@ class DefaultController extends Controller
             WHERE j.id = l.idJoueur and l.validationPaiement = 0 and l.anneeLicence = 2017 and l.demandeLicenceEnCours = 1'
         );
 
-        $joueursPaiement = $query1->getResult();
-
-
-       
+        $joueursPaiement = $query1->getResult();  
+        $nbrJoueursPaiement = COUNT($joueursPaiement);
 
         $query3 = $em->createQuery(
             'SELECT j
@@ -193,14 +200,8 @@ class DefaultController extends Controller
         );
 
         $joueursDocuement = $query3->getResult();
+        $nbrJoueursDocuement = COUNT($joueursDocuement);
 
-        $query4 = $em->createQuery(
-            'SELECT j
-            FROM AppBundle:User j, JoueurBundle:licenceJoueur l
-            WHERE j.id = l.idJoueur and l.anneeLicence = 2017 and l.validationLicenceFede = 1
-            ORDER BY j.nom ASC'
-        );
-        $joueursLicencieFinal = $query4->getResult();
 
         $query5 = $em->createQuery(
             'SELECT j
@@ -209,15 +210,18 @@ class DefaultController extends Controller
         );
 
         $joueursAttente = $query5->getResult();
-
+        $nbrJoueursAttente = COUNT($joueursAttente);
         
 
         return $this->render('AdminBundle:Default:joueurs.html.twig', array(
         'joueursLicencie' => $joueursLicencie,
         'joueursDocuement' => $joueursDocuement,
         'joueursPaiement' => $joueursPaiement,
-        'joueursLicencieFinal' => $joueursLicencieFinal,
         'joueursAttente' => $joueursAttente,
+        'nbrJoueursLicencie' => $nbrJoueursLicencie,
+        'nbrJoueursPaiement' => $nbrJoueursPaiement,
+        'nbrJoueursDocuement' => $nbrJoueursDocuement,
+        'nbrJoueursAttente' => $nbrJoueursAttente,
             ));
     }
 
@@ -227,6 +231,7 @@ class DefaultController extends Controller
 
         $em = $this->getDoctrine()->getEntityManager();
             $licence = $em->getRepository('JoueurBundle:licenceJoueur')->findOneBy( array('idJoueur' =>  $user->getId(), 'anneeLicence' => 2017 ) );
+             $fichiersPresents = $em->getRepository('JoueurBundle:fichierUploadJoueur')->findBy( array('IdJoueur' => $user->getId() ));
         
         $licenceAdmin = $em->getRepository('AdminBundle:Licence')->findOneBy( array('id' => $licence->getIdLicenceChoisie()) );
         $fichiersPresents = $em->getRepository('JoueurBundle:fichierUploadJoueur')->findBy( array('IdJoueur' => $user->getId(), 'anneeInscription' => 2017 ));
@@ -277,8 +282,23 @@ class DefaultController extends Controller
 
     public function licenceInfoAction(Licence $licence )
     {
+        $form = $this->get('form.factory')->create(new LicenceType, $licence);
+         $em = $this->getDoctrine()->getEntityManager();
+
+         $query = $em->createQuery(
+            'SELECT j
+            FROM AppBundle:User j, JoueurBundle:licenceJoueur l
+            WHERE j.id = l.idJoueur and l.anneeLicence = 2017 and l.validationLicenceFede = 1 and l.idLicenceChoisie =  :id'
+        )->setParameter('id', $licence->getId());
+
+        $joueursInscris = $query->getResult();
+
+        $nbrJoueur = COUNT($joueursInscris);
+
         return $this->render('AdminBundle:Default:licenceInfo.html.twig', array(
         'licence' => $licence,
+        'nbrJoueur' => $nbrJoueur,
+        'joueursInscris' => $joueursInscris,
             ));
     }
 

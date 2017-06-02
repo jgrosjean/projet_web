@@ -41,7 +41,7 @@
 											<li><strong>{{licenceSenior.description3}}</strong> </li>
 										</ul>
 									<a href="{{ path('admin_modifierLicence', {'id':licenceSenior.id}) }}" class="btn">Modifier</a><br>
-									<a href="{{ path('admin_recupLicencieParLicenceCSV', {'licence_id':licenceSenior.id}) }}" > joueurs inscrits</a>
+									<a href="{{ path('admin_licenceInfo', {'id':licenceSenior.id}) }}">Plus d'infos</a><br><br>
 								</div>
 					    	{%endfor%}
 						</div>
@@ -63,7 +63,7 @@
 										</ul>
 									<a href="{{ path('admin_modifierLicence', {'id':licenceSeniorReduc.id}) }}" class="btn">Modifier</a>
 									<br>
-									<a href="{{ path('admin_recupLicencieParLicenceCSV', {'licence_id':licenceSeniorReduc.id}) }}" > joueurs inscrits</a>
+									<a href="{{ path('admin_licenceInfo', {'id':licenceSeniorReduc.id}) }}">Plus d'infos</a><br><br>
 								</div>
 					    	{%endfor%}
 						</div>
@@ -86,7 +86,7 @@
 										</ul>
 									<a href="{{ path('admin_modifierLicence', {'id':licenceJeune.id}) }}" class="btn">Modifier</a>
 									<br>
-									<a href="{{ path('admin_recupLicencieParLicenceCSV', {'licence_id':licenceJeune.id}) }}" > joueurs inscrits</a>
+									<a href="{{ path('admin_licenceInfo', {'id':licenceJeune.id}) }}">Plus d'infos</a>
 								</div>
 					    	{%endfor%}
 						</div>
@@ -108,7 +108,7 @@
 										</ul>
 									<a href="{{ path('admin_modifierLicence', {'id':licenceJeuneReduc.id}) }}" class="btn">Modifier</a>
 									<br>
-									<a href="{{ path('admin_recupLicencieParLicenceCSV', {'licence_id':licenceJeuneReduc.id}) }}" > joueurs inscrits</a>
+									<a href="{{ path('admin_licenceInfo', {'id':licenceJeuneReduc.id}) }}">Plus d'infos</a>
 								</div>
 					    	{%endfor%}
 						</div>

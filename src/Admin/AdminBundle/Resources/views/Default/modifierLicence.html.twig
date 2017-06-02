@@ -43,7 +43,8 @@
 					<h3>Rentrer les nouvelles informations :</h3>
 					<p>Ce n'est pas possible de changer le prix ou la catégorie. Vous pouvez toujours rendre l'offre non visible et en creer une nouvelle.</p>
 	        <p>{{ form(form)}}</p>
-			
+				<a href="{{ path('admin_licenceInfo', {'id':licence.id}) }}">Plus d'infos sur cette licence ?</a>
+					</p>
 	        </div>
 			
 	    </div>

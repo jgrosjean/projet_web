@@ -172,7 +172,13 @@ class DefaultController extends Controller
         $fichiersPresentsAvant = $em->getRepository('JoueurBundle:fichierUploadJoueur')->findBy( array('IdJoueur' => $this->getUser(), 'anneeInscription' => 2017-1));
         $fichiersPresentsAvant1 = $em->getRepository('JoueurBundle:fichierUploadJoueur')->findBy( array('IdJoueur' => $this->getUser(), 'anneeInscription' => 2017-2));
         $majeur = $this -> getUser()->estMajeur();
-        $licenceReduction = $em->getRepository('AdminBundle:Licence')->findOneBy( array('id' => $licence->getIdLicenceChoisie() ));
+        if($licence != null){
+            $licenceReduction = $em->getRepository('AdminBundle:Licence')->findOneBy( array('id' => $licence->getIdLicenceChoisie() ));
+            
+        }
+        else{
+            $licenceReduction=null;
+        }
         $extension =0;
 
         $document = new fichierUploadJoueur();

@@ -2,40 +2,68 @@
 
 {% block body %}
 
-	
-	
-		<!-- Pricing Table -->
-		<div class="section">
-	    	<div class="container">
-				<h1>Information sur la licence</h1><br>
+	<div class="section section-breadcrumbs">
+          <div class="container">
+            <div class="row">
+              <div class="col-md-12">
+                <h1>Informations licence</h1>
+              </div>
+            </div>
+          </div>
+        </div>
 
+	<div class="section">
+	        <div class="container">
+			<h2> Informations licence </h2>
+			<p>Information sur la licence : {{licence.intitule}}</p><br>
 
-						<div class="row">
-							<div class="col-md-7">
-								<!-- Job Description -->
-								<div class="job-details-wrapper">
-									<h3>{{licence.intitule}}</h3>
-									
-									<h4>Voici les points caractéristiques de cette licence : </h4>
-									<ul>
-										<li>catégorie : {{licence.categorie}} </li>
+			<div class="col-sm-6">
+						<div class="portfolio-item">
+							<div class="portfolio-image">
+								<a href="#"><img src="{{ asset('img/photoJeune.jpg') }} " alt="Project Name"></a>
+							</div>
+						</div>
+					</div>
+					<!-- End Image Column -->
+					<!-- Project Info Column -->
+					<div class="portfolio-item-description col-sm-6">
+						<h3><B>{{licence.intitule}}</B></h3>
+						
+						<h4>Voici les points caractéristiques de cette licence : </h4>
+						<ul>
+							<li>catégorie : {{licence.categorie}} </li>
 										<li>prix: {{licence.prix}} €</li>
 										<li>{{licence.description1}}</li>
 										<li>{{licence.description2}}</li>
 										<li>{{licence.description3}}</li>
-									</ul>
-									<p>
-										{{licence.descriptionComplete}}
-									</p><br>
-								
-								</div>
-								<!-- End Job Description -->
-							</div>
-							<!-- Sidebar -->
-							
-						</div>
+						</ul>
+						{{licence.descriptionComplete}}
+						<br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
 					</div>
-				</div>
+				
+					<h2> Joueurs inscris pour cette licence :</h2>
+					<p>
+						il y a <B> {{nbrJoueur}} joueurs </B> inscris pour cette licence : <a href="{{ path('admin_recupLicencieParLicenceCSV', {'licence_id':licence.id}) }}" > Télécharger la liste</a>
+						<ul>
+						{% for joueurInscris in joueursInscris %}
+										
+								<li><strong>{{joueurInscris.prenom}} {{joueurInscris.nom}}</strong> </li>
+								
+										
+								
+						{%endfor%}
+						</ul>
+					</p>
+	        </div>
+			
+	    </div>
+	    
+
+		
+
+		
+	
+
 
 
 

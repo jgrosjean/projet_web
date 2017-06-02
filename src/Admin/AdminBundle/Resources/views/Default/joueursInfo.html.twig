@@ -56,7 +56,7 @@
             <h2>information sur la licence actuelle septembre {{licence.anneeLicence}}</h2>
               <p>
 
-                     <p>Ce joueur a fait une demande pour  <a href="{{ path('joueur_licencesInfos', {'id':licence.idLicenceChoisie}) }}"> cette formule</a> le {{licence.dateInscriptionLicence|date("m/d/Y")}} .</p>
+                     <p>Ce joueur a fait une demande pour  <a href="{{ path('admin_licenceInfo', {'id':licence.idLicenceChoisie}) }}"> cette formule</a> le {{licence.dateInscriptionLicence|date("m/d/Y")}} .</p>
                         {% if  licence.demandeLicenceEnCours == 1  and licence.demandeDeLicence == 0 %}
                            
                                 <p><B>Vous n'avez pas encore confirmé cette inscription.</B></p><br>
@@ -172,9 +172,15 @@
      <div class="section">
           <div class="container">
             <h2>L'ensemble des documents fournis : </h2>
-              <p>
-                 A FAIRE
+            <p>Voici l'ensemble des documents que ce joueur a uplader sur l'application :</p>  
+              <ul>
+                 	{% for fichierPresents in fichiersPresents %}
 
+						<li><a target="_blank" href="{{ asset('uploads/fichiersJoueur/' ~ fichierPresents.path) }}">{{fichierPresents.name}} </a> ( {{ fichierPresents.date|date("d/m/Y") }} ) </li> 
+
+					
+				{%endfor%}
+        </ul>
               </p>
  			 </div>
 		</div>
